@@ -13,7 +13,12 @@
   		<artifactId>javafx-fxml</artifactId>
   		<version>16-ea+5</version>
   	</dependency>
-  	
+  	<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+	<dependency>
+	    <groupId>org.openjfx</groupId>
+	    <artifactId>javafx-media</artifactId>
+	    <version>17-ea+6</version>
+	</dependency>
   	<!--  JUnit 5 -->
   	<dependency>
   		<groupId>org.junit.jupiter</groupId>
@@ -21,6 +26,7 @@
   		<version>5.7.0</version>
   	</dependency>
   </dependencies>
+  
   
   <build>
   	<plugins>

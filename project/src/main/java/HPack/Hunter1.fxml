@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HPack.HunterController">
+   <children>
+      <Button fx:id="Pause" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#Pause" text="Pause" />
+      <Button fx:id="help" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="0.0" layoutX="6.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#help" prefHeight="30.0" prefWidth="30.0">
+         <graphic>
+            <ImageView fitHeight="54.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@help.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button focusTraversable="false" layoutX="44.0" layoutY="604.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#enableSlider" prefHeight="32.0" prefWidth="30.0">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@sound.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Pane fx:id="gamePane" layoutX="-50.0" prefHeight="600.0" prefWidth="700.0" />
+      <Slider fx:id="volumeSlider" blockIncrement="0.01" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" />
+      <BorderPane layoutX="488.0" layoutY="604.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: grey;">
+         <center>
+            <ImageView fx:id="trapIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@trap.png" />
+               </image>
+            </ImageView>
+         </center>
+      </BorderPane>
+      <Text layoutX="246.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Health" />
+      <Text layoutX="328.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hunger" />
+      <Text layoutX="417.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thirst" />
+      <HBox layoutX="83.0" layoutY="604.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="118.0">
+         <children>
+            <Text fx:id="days" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="days" underline="true">
+               <font>
+                  <Font size="8.0" />
+               </font></Text>
+            <Text fx:id="years" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="years" underline="true">
+               <font>
+                  <Font size="8.0" />
+               </font></Text>
+         </children>
+      </HBox>
+      <BorderPane layoutX="233.0" layoutY="620.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="64.0" style="-fx-border-color: black;">
+         <center>
+            <Rectangle fx:id="health" fill="#f03f3f" height="15.0" smooth="false" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" width="62.0" BorderPane.alignment="TOP_LEFT" />
+         </center>
+      </BorderPane>
+      <BorderPane layoutX="316.0" layoutY="620.0" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="64.0" style="-fx-border-color: black;">
+         <center>
+            <Rectangle fx:id="hunger" fill="#32dc23" height="15.0" smooth="false" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" width="62.0" BorderPane.alignment="TOP_LEFT" />
+         </center>
+      </BorderPane>
+      <BorderPane layoutX="401.0" layoutY="620.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="64.0" style="-fx-border-color: black;">
+         <center>
+            <Rectangle fx:id="thirst" fill="#23b4db" height="15.0" smooth="false" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" width="62.0" BorderPane.alignment="TOP_LEFT" />
+         </center>
+      </BorderPane>
+   </children>
+</Pane>
