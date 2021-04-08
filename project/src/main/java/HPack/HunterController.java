@@ -51,7 +51,6 @@ public class HunterController {
 	double volume = 0.03;
 	ImageView hunterImage;
 	boolean isPaused = false;
-	GameObject removed;
 	
 	@FXML
 	void initialize() {
@@ -172,15 +171,6 @@ public class HunterController {
 	public void setDays(String days) {
 		this.days.setText(days);
 	}
-	public void addItem(GameObject obj) {
-		ImageView imageView = new ImageView();
-		obj.setImageView(imageView, images.get(obj.getType()));
-		gamePane.getChildren().add(imageView);
-		if(obj.getType()!="bird") {
-			imageView.toBack();
-		}
-		
-	}
 //	Pre initialize sprites, so that game-performance is increased.
 	public void initSprites() {
 		images.put("trap", new Image("HPack/trap.png"));
@@ -208,9 +198,6 @@ public class HunterController {
 	public ImageView getTrapIcon() {
 		return trapIcon;
 	}
-	public void setRemoved(GameObject obj) {
-		this.removed = obj;
-	}
 	public void setMediaVolume(double volume) {
 		mediaPlayer.setVolume(volume);
 	}
@@ -219,9 +206,6 @@ public class HunterController {
 	}
 	public void resumeMusic() {
 		mediaPlayer.play();
-	}
-	public GameObject getRemoved() {
-		return removed;
 	}
 	public void addBackground() {
 		BackgroundImage bgI = new BackgroundImage(new Image("HPack/Grass.png",600.0,600.0,false,true

@@ -1,5 +1,6 @@
 package HPack;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -12,10 +13,7 @@ public class Timer extends AnimationTimer{
 	double last;
 	double delta;
 	double amount;
-	int lastMod;
-	int lastMod2;
-	int lastMod3;
-	int lastMod4;
+	int lastMod, lastMod2, lastMod3, lastMod4, lastMod5;
 	int days;
 	int years;
 	Game game;
@@ -40,16 +38,17 @@ public class Timer extends AnimationTimer{
 			while(iterator.hasNext()) {
 				DynamicAnimal animal = iterator.next();
 				if(animal.getType().equals("rabbit") &&  GameObject.isOver(animal, game.getTrapHitBox())) {
-					game.initGameObject("rabbitMeat", game.getTrap().getX(), game.getTrap().getY());
-					game.remove(animal);
+					System.out.println("Passed");
+					game.initGameObject("rabbitMeat", animal.getX(), animal.getY());
+					game.remove(animal,true);
+					iterator.remove();
+					break;
 	
 				}
 			}
 		}
 		game.controller.setHunger(game.getHunter().getHunger()-delta/3e8);
 		game.controller.setThirst(game.getHunter().getThirst()-delta/2e8);
-		if(game.getObjects().contains(game.controller.getRemoved()))
-			game.getObjects().remove(game.controller.getRemoved());
 		last = now;
 		
 		// initiates a water every 5 seconds
@@ -79,6 +78,13 @@ public class Timer extends AnimationTimer{
 		if((int)(time*10)%1== 0 && lastMod4 != (int)(time*10)) {
 			lastMod4 = (int)(time*10);
 			game.controller.nextImages("rabbit");
+		}
+		if((int)time%10==0 && lastMod5 != (int)time) {
+			lastMod5 = (int)time;
+			
+			for(GameObject obj:game.getObjects()) {
+				System.out.println(obj.getType());
+			}
 		}
 		
 		
