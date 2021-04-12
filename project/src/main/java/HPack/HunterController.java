@@ -23,33 +23,22 @@ import javafx.scene.text.Text;
 
 public class HunterController {
 	@FXML
-	Pane pane;
+	Pane pane, gamePane;
 	@FXML
-	Button Pause;
-	@FXML
-	Button help;
+	Button Pause, help;
 	@FXML
 	Slider volumeSlider;
 	@FXML
-	Pane gamePane;
+	Rectangle health, hunger, thirst;
 	@FXML
-	Rectangle health;
-	@FXML
-	Rectangle hunger;
-	@FXML
-	Rectangle thirst;
-	@FXML
-	Text days;
-	@FXML
-	Text years;
+	Text days, years;
 	@FXML
 	ImageView trapIcon;
+	MediaPlayer hit;
 	Game game = new Game(this);
 	HashMap<String, Image> images = new HashMap<String,Image>(); 
-	Media media;
 	MediaPlayer mediaPlayer;
 	double volume = 0.03;
-	ImageView hunterImage;
 	boolean isPaused = false;
 	
 	@FXML
@@ -137,7 +126,7 @@ public class HunterController {
 				if(X+hunter.getWidth()>650 || X<50 || isPaused) {
 					X = hunter.getX();
 				}
-				if(Y+hunter.getHeight()>600 ||Y<0|| isPaused) {
+				if(Y+hunter.getHeight()>600 || Y<0 || isPaused) {
 					Y = hunter.getY();
 				}
 				if(X<hunter.getX()) hunter.setImageView(hunter.getImageView(),images.get("hunterL"));
@@ -188,8 +177,14 @@ public class HunterController {
 		images.put("rabbitD",new Image("HPack/rabbitD.png"));
 		images.put("rabbitMeat",new Image("HPack/rabbitMeat.png"));
 	}
-	public void addMusic(double volume) {
-		media = new Media(new File("src/main/java/Hpack/Retro_lyder.mp3").toURI().toString());
+	public void initSounds() {
+	
+	}
+	public void addMusic(double volume) {	
+		Media media1 = new Media(new File("src/main/resources/hit.wav").toURI().toString());
+		hit = new MediaPlayer(media1);
+		hit.setVolume(volume);
+		Media media = new Media(new File("src/main/java/Hpack/Retro_lyder.mp3").toURI().toString());
 		mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setVolume(volume);
 		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -200,6 +195,7 @@ public class HunterController {
 	}
 	public void setMediaVolume(double volume) {
 		mediaPlayer.setVolume(volume);
+		hit.setVolume(volume);
 	}
 	public void pauseMusic() {
 		mediaPlayer.pause();

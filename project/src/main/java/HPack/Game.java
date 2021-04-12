@@ -16,20 +16,18 @@ public class Game {
 	ToFile toFile = new ToFile(this);
 	double time = 0;
 	Hunter hunter;
-	Item trap;
-	Item trapHitBox;
+	Item trap,trapHitBox;
 	boolean check = false;
+	IncrementInit iI5;
 	
-	
-	public Item getTrapHitBox() {
-		return trapHitBox;
-	}
-
-
 	Game(HunterController controller){
 		this.controller = controller;
 	}
 	
+	public void incrementHandler() {
+		IncrementInit iI5 = new IncrementInit(5000);
+		IncrementInit iI2 = new IncrementInit(2000);
+	}
 	
 	public void main() {
 		Hunter hunter = new Hunter((controller.gamePane.getPrefWidth())/2,(controller.gamePane.getPrefHeight())/2,new ImageView(),controller.images.get("hunterD"));
@@ -72,15 +70,15 @@ public class Game {
 	}
 
 	public void initGameObject(String type, double x, double y) {
-		orderZ();
 		switch(type) {
 		case "rabbit": DynamicAnimal obj = new DynamicAnimal(); initClassObject(obj,x,y,type); break;
 		case "bird": DynamicAnimal obj2 = new DynamicAnimal(); initClassObject(obj2,x,y,type); break;
 		case "water": Item obj3 = new Item(); initClassObject(obj3,x,y,type); break;
-		case "rabbitMeat": Item obj4 = new Item(); initClassObject(obj4,x,y,type); break;
-		case "trap": Item obj5 = new Item(); initClassObject(obj5,x,y,type); this.trap = obj5; initGameObject("trapHitBox", x + obj5.getWidth()/2, y); break;
-		case "trapHitBox": Item obj6 = new Item(); initClassObject(obj6,x,y,type);  obj6.getImageView().setVisible(false); obj6.setWidth(0.01); this.trapHitBox = obj6; break;
+		case "rabbitMeat": Item obj4 = new Item(); initClassObject(obj4,x,y,type); obj4.setHeight(15); break;
+		case "trap": Item obj5 = new Item(); initClassObject(obj5,x,y,type); this.trap = obj5; initGameObject("trapHitBox", x + obj5.getWidth()/2, y+obj5.getHeight()/2); break;
+		case "trapHitBox": Item obj6 = new Item(); initClassObject(obj6,x,y,type);  obj6.getImageView().setVisible(false); obj6.setWidth(0.01); obj6.setHeight(0.01); this.trapHitBox = obj6; break;
 		}
+		orderZ();
 	}
 	private void initClassObject(GameObject obj, double x, double y, String type) {
 		obj.setImageView(new ImageView(), controller.images.get(type));
@@ -154,6 +152,9 @@ public class Game {
 	}
 	public Item getTrap() {
 		return trap;
+	}	
+	public Item getTrapHitBox() {
+		return trapHitBox;
 	}
 	List<GameObject> getObjects(){
 		return objects;

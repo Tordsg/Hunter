@@ -1,65 +1,69 @@
 package HPack;
 
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
-
 import javafx.animation.AnimationTimer;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 
 public class Timer extends AnimationTimer{
-	double time = 0;
-	double last;
-	double delta;
-	double amount;
-	int lastMod, lastMod2, lastMod3, lastMod4, lastMod5;
-	int days;
-	int years;
+	double time = 0, last = System.nanoTime(), delta, amount;
+	int lastMod, lastMod2, lastMod3, lastMod4, lastMod5, lastDamaged, delayCheck, days, years;
+	List<IncrementInit> inits = new ArrayList<IncrementInit>();
 	Game game;
+	boolean damaged;
+	IncrementInit iI = new IncrementInit(5000); 
+	IncrementInit scoreCount = new IncrementInit(1000);
+	IncrementInit iI2 = new IncrementInit(200);
+	IncrementInit iI3 = new IncrementInit(100);
+	IncrementInit damage = new IncrementInit(1000);
 	Timer(Game game){
 		this.game = game;
 	}
 	@Override
 	public void handle(long now) {
-		delta = now-last;
-		if(last==0) {
-			time -=now/1e9;
-		}
-		if(delta>5e7) delta = 0;
-		amount = 3*delta/1e7;
-		//Continuously moves the birds to the right
-		if(amount<40) {
-			game.moveAnimal(amount);
+		delta = (now-last)/1e6;	
+		last = now;
+			game.moveAnimal(delta/5);
 			time+=delta/1e9;
-		}
 		if(!game.controller.getTrapIcon().isVisible()) {
 			ListIterator<DynamicAnimal> iterator = game.getDynamicAnimals().listIterator();
 			while(iterator.hasNext()) {
 				DynamicAnimal animal = iterator.next();
 				if(animal.getType().equals("rabbit") &&  GameObject.isOver(animal, game.getTrapHitBox())) {
-					System.out.println("Passed");
 					game.initGameObject("rabbitMeat", animal.getX(), animal.getY());
 					game.remove(animal,true);
 					iterator.remove();
 					break;
-	
 				}
 			}
 		}
-		game.controller.setHunger(game.getHunter().getHunger()-delta/3e8);
-		game.controller.setThirst(game.getHunter().getThirst()-delta/2e8);
-		last = now;
-		
-		// initiates a water every 5 seconds
-		if((int)time%5==0 && lastMod != (int)time && game.nrOfType("water")<10) {
-			lastMod = (int)time;
-			game.initGameObject("water", Math.random()*(570)+50, Math.random()*(570));
+	
+		if(!damaged) {
+			if(game.controller.getThirst().getWidth()==0 || game.controller.getHunger().getWidth()==0) {
+				game.controller.setHealth(game.controller.getHealth().getWidth()-62*0.1);
+				damaged = true;
+				game.controller.hit.play();
+			} else {
+				for(DynamicAnimal animal : game.getDynamicAnimals()) {
+					if(GameObject.isOver(animal, game.getHunter())) {
+						game.controller.setHealth(game.controller.getHealth().getWidth()-62*0.1);
+						damaged = true;
+						game.controller.hit.play();
+					}
+				}
+			}
 		}
-		// initiates a bird every three seconds
-		if((int)time%1==0 && lastMod2 != (int)time && game.nrOfType("bird")<7) {
-			lastMod2 = (int)time;
-//			updates the score
+		if(damaged && damage.update(delta)) {
+			damaged = false;
+			game.controller.hit.stop();
+		}	
+		if(game.getHunter().getHunger()>0) game.controller.setHunger(game.getHunter().getHunger()-delta/4e2);
+		if(game.getHunter().getThirst()>0) game.controller.setThirst(game.getHunter().getThirst()-delta/2e2);
+		System.out.println(game.controller.getHunger().getWidth());
+		if(iI.update(delta)) game.initGameObject("water", Math.random()*(570)+50, Math.random()*(570));
+		if(iI2.update(delta)) game.controller.nextImages("bird");
+		if(iI3.update(delta)) game.controller.nextImages("rabbit");
+		if(scoreCount.update(delta)) {
 			days++;
 			if(days == 365) {
 				days = 0;
@@ -70,23 +74,6 @@ public class Timer extends AnimationTimer{
 			game.initGameObject("bird", 0, Math.random()*(570));
 			game.initGameObject("rabbit",650, Math.random()*(570));
 		}
-		// changes the sprite of the bird every 200ms.
-		if((int)(time*10)%2== 0 && lastMod3 != (int)(time*10)) {
-			lastMod3 = (int)(time*10);
-			game.controller.nextImages("bird");
-		}
-		if((int)(time*10)%1== 0 && lastMod4 != (int)(time*10)) {
-			lastMod4 = (int)(time*10);
-			game.controller.nextImages("rabbit");
-		}
-		if((int)time%10==0 && lastMod5 != (int)time) {
-			lastMod5 = (int)time;
-			
-			for(GameObject obj:game.getObjects()) {
-				System.out.println(obj.getType());
-			}
-		}
-		
 		
 	}
 	public double getTime() {
@@ -94,6 +81,9 @@ public class Timer extends AnimationTimer{
 	}
 	public void setTime(double time) {
 		this.time = time;
+	}
+	public void initWater() {
+		game.initGameObject("water", Math.random()*(570)+50, Math.random()*(570));
 	}
 	
 }
