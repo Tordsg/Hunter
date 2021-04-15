@@ -17,7 +17,7 @@ public class HunterApp extends Application{
 	static boolean interact = false;
 	
 	public void start(final Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Lineage");
+		primaryStage.setTitle("Hunter");
 		Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Hunter1.FXML")));
 		primaryStage.setScene(scene);
 		primaryStage.show();

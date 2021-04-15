@@ -3,7 +3,7 @@ package HPack;
 public class IncrementInit {
 	private double time = 0;
 	private double lastInit = 0;
-	private int increment;
+	private double increment;
 	IncrementInit(int increment){
 		this.increment = increment;
 	}
@@ -21,10 +21,10 @@ public class IncrementInit {
 	public void time(double time) {
 		this.time = time;
 	}
-	public int getIncrement() {
+	public double getIncrement() {
 		return increment;
 	}
-	public void setIncrement(int increment) {
+	public void setIncrement(double increment) {
 		this.increment = increment;
 	}
 	

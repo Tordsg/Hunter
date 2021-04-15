@@ -12,29 +12,48 @@ public class Game {
 	private List<GameObject> objects = new ArrayList<GameObject>(); 
 	private List<DynamicAnimal> dynamicAnimals= new ArrayList<DynamicAnimal>();
 	HunterController controller;
-	Timer timer = new Timer(this);
+	Timer timer;
+	Movement movement = new Movement(this);
 	ToFile toFile = new ToFile(this);
 	double time = 0;
 	Hunter hunter;
 	Item trap,trapHitBox;
 	boolean check = false;
+	boolean isPaused = false;
 	IncrementInit iI5;
 	
 	Game(HunterController controller){
 		this.controller = controller;
 	}
 	
-	public void incrementHandler() {
-		IncrementInit iI5 = new IncrementInit(5000);
-		IncrementInit iI2 = new IncrementInit(2000);
-	}
-	
-	public void main() {
-		Hunter hunter = new Hunter((controller.gamePane.getPrefWidth())/2,(controller.gamePane.getPrefHeight())/2,new ImageView(),controller.images.get("hunterD"));
-		controller.gamePane.getChildren().add(hunter.getImageView());
-		controller.movement(hunter);
-		this.hunter = hunter;
+	public void start() {
+		HunterController.sounds.get("gameOver").stop();
+		timer = new Timer(this);
 		timer.start();
+		movement.start();
+	}
+	public void stop() {
+		timer.stop();
+		movement.stop();
+	}
+	public void gameOver() {
+		stop();
+		controller.gamePane.getChildren().remove(hunter.getImageView());
+		addPlayer(); 
+		controller.setHealth(62);
+		controller.setHunger(62);
+		controller.setThirst(62);
+		controller.getTrapIcon().setVisible(true);
+		objects.forEach(o -> controller.gamePane.getChildren().remove(o.getImageView()));
+		objects.clear();
+		hunter.setImageView(hunter.getImageView(),HunterController.images.get("hunterD"));
+		
+	}
+	public void addPlayer() {
+		Hunter hunter = new Hunter(338,270,new ImageView(),HunterController.images.get("hunterD"));
+		this.hunter = hunter;
+		controller.gamePane.getChildren().add(hunter.getImageView());
+		
 	}
 	public void initFromFile() {
 		toFile.read();
@@ -43,9 +62,6 @@ public class Game {
 			controller.gamePane.getChildren().add(obj.getImageView());
 			if(obj.getType().equals("water") || obj.getType().equals("trap") || obj.getType().equals("rabbit")) {
 				obj.getImageView().toBack();
-			}
-			if(obj.getType().equals("hunter")) {
-				controller.movement((Hunter)obj);
 			}
 		}
 	}
@@ -61,7 +77,7 @@ public class Game {
 				}
 			} else if (animal.getType().equals("rabbit")){
 				animal.setX(animal.getX()-amount);
-				if(animal.getX()<-20){
+				if(animal.getX()<30){
 					remove(animal, true);
 					iterator.remove();
 				}
@@ -81,7 +97,7 @@ public class Game {
 		orderZ();
 	}
 	private void initClassObject(GameObject obj, double x, double y, String type) {
-		obj.setImageView(new ImageView(), controller.images.get(type));
+		obj.setImageView(new ImageView(), HunterController.images.get(type));
 		obj.setType(type);
 		obj.setX(x);
 		obj.setY(y);

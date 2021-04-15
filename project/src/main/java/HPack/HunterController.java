@@ -23,39 +23,45 @@ import javafx.scene.text.Text;
 
 public class HunterController {
 	@FXML
-	Pane pane, gamePane;
+	Pane pane, gamePane, infoPane;
 	@FXML
-	Button Pause, help;
+	Button Pause, help, play;
 	@FXML
 	Slider volumeSlider;
 	@FXML
 	Rectangle health, hunger, thirst;
 	@FXML
-	Text days, years;
+	Text days, years, header;
 	@FXML
 	ImageView trapIcon;
-	MediaPlayer hit;
 	Game game = new Game(this);
-	HashMap<String, Image> images = new HashMap<String,Image>(); 
-	MediaPlayer mediaPlayer;
+	static HashMap<String, Image> images = new HashMap<String,Image>();
+	static HashMap<String, MediaPlayer> sounds = new HashMap<String, MediaPlayer>();
 	double volume = 0.03;
-	boolean isPaused = false;
 	
 	@FXML
 	void initialize() {
-		addBackground();
+		headerUp(false);
 		addMusic(volume);
-		initSprites();
-		game.main();
-		
+		game.addPlayer();
+	}
+	@FXML
+	void play() {
+		play.setVisible(false);
+		play.setDisable(true);
+		Pause.setText("Pause");
+		headerUp(true);
+		game.start();
+	}
+	void gameOver() {
+		headerUp(false);
+		Pause.setText("Resume");
 	}
 	void initializeFromFile() {
-		if(!isPaused) {
-		addBackground();
-		addMusic(volume);
-		initSprites(); 
-		}
-		game.initFromFile();
+//		if(!isPaused) {
+//		addBackground();
+//		addMusic(volume);
+//		game.initFromFile();
 	}
 	
 	@FXML
@@ -64,19 +70,31 @@ public class HunterController {
 			Pause.setText("Resume");
 			game.pauseTimer();
 			game.toFile.write();
-			isPaused = true;
-			
 		} else {
 			Pause.setText("Pause");
 			initializeFromFile();
-			isPaused = false;
 			game.resumeTimer();
 		}
 	}
 
 	@FXML
 	void help() {
-		
+		if(infoPane.isVisible()) {
+			if(!Pause.getText().equals("Resume")) {
+				game.timer.resume();
+				game.movement.start();
+			}
+			infoPane.setVisible(false);
+			infoPane.setDisable(true);
+		} else {
+			infoPane.setVisible(true);
+			infoPane.setDisable(false);
+			infoPane.toFront();
+			if(!Pause.getText().equals("Resume")) {
+			game.timer.pause();
+			game.movement.stop();
+			}
+		}
 	}
 	@FXML
 	void setSliderVolume() {
@@ -102,41 +120,35 @@ public class HunterController {
 		volumeSlider.setDisable(true);
 		volumeSlider.setVisible(false);
 	}
-	
-	void movement(Hunter hunter) {	
-		AnimationTimer animation = new AnimationTimer() {
-			double delta;
-			long lastFrame;
+	public void headerUp(boolean direction){
+		AnimationTimer up = new AnimationTimer() {
+			long last = System.nanoTime();
+			long delta;
 			@Override
 			public void handle(long now) {
-				delta = (now-lastFrame)/1e7;
-				lastFrame = now;
-
-				double speed = hunter.getSpeed();
-				double X = hunter.getX();
-				double Y = hunter.getY();
-				
-				if(HunterApp.up) Y-=speed*delta;
-				if(HunterApp.down) Y+=speed*delta;
-				if(HunterApp.left) X-=speed*delta; 
-				if(HunterApp.right) X+=speed*delta;
-				if(HunterApp.interact) {
-					game.objectInteraction();
+				delta = now-last;
+				last = now;
+				if(direction) {
+					if(header.getLayoutY()<-200) {
+						this.stop();
+						header.setVisible(false);
+						header.setDisable(true);
+					}
+					header.setLayoutY(header.getLayoutY()-delta/2e6);
 				}
-				if(X+hunter.getWidth()>650 || X<50 || isPaused) {
-					X = hunter.getX();
+				else {
+					header.setVisible(true);
+					header.setDisable(false);
+					if(header.getLayoutY()>=175) {
+						play.setVisible(true);
+						play.setDisable(false);
+						this.stop();
+					}
+					header.setLayoutY(header.getLayoutY()+delta/6e6);
 				}
-				if(Y+hunter.getHeight()>600 || Y<0 || isPaused) {
-					Y = hunter.getY();
-				}
-				if(X<hunter.getX()) hunter.setImageView(hunter.getImageView(),images.get("hunterL"));
-				else if(X>hunter.getX())  hunter.setImageView(hunter.getImageView(),images.get("hunterR"));
-				else if (Y<hunter.getY())  hunter.setImageView(hunter.getImageView(),images.get("hunterU"));
-				else if(Y>hunter.getY())  hunter.setImageView(hunter.getImageView(),images.get("hunterD"));
-				hunter.setPosition(X, Y);
 			}
 		};
-		animation.start();
+		up.start();
 	}
 	void nextImages(String type) {
 		for(DynamicAnimal obj : game.getDynamicAnimals()) {
@@ -160,55 +172,45 @@ public class HunterController {
 	public void setDays(String days) {
 		this.days.setText(days);
 	}
-//	Pre initialize sprites, so that game-performance is increased.
-	public void initSprites() {
-		images.put("trap", new Image("HPack/trap.png"));
-		images.put("water",new Image("HPack/water.png"));
-		images.put("birdU",new Image("HPack/birdU.png"));
-		images.put("bird",new Image("HPack/bird.png"));
-		images.put("bird2",new Image("HPack/bird2.png"));
-		images.put("birdD",new Image("HPack/birdD.png"));
-		images.put("hunterD",new Image("HPack/hunterD.png"));
-		images.put("hunterU",new Image("HPack/hunterU.png"));
-		images.put("hunterL",new Image("HPack/hunterL.png"));
-		images.put("hunterR",new Image("HPack/hunterR.png"));
-		images.put("rabbitU",new Image("HPack/rabbitU.png"));
-		images.put("rabbit",new Image("HPack/rabbit.png"));
-		images.put("rabbitD",new Image("HPack/rabbitD.png"));
-		images.put("rabbitMeat",new Image("HPack/rabbitMeat.png"));
+	static {
+		images.put("trap", new Image("trap.png"));
+		images.put("water",new Image("water.png"));
+		images.put("birdU",new Image("birdU.png"));
+		images.put("bird",new Image("bird.png"));
+		images.put("bird2",new Image("bird2.png"));
+		images.put("birdD",new Image("birdD.png"));
+		images.put("hunterD",new Image("hunterD.png"));
+		images.put("hunterU",new Image("hunterU.png"));
+		images.put("hunterL",new Image("hunterL.png"));
+		images.put("hunterR",new Image("hunterR.png"));
+		images.put("rabbitU",new Image("rabbitU.png"));
+		images.put("rabbit",new Image("rabbit.png"));
+		images.put("rabbitD",new Image("rabbitD.png"));
+		images.put("rabbitMeat",new Image("rabbitMeat.png"));
+		
+		sounds.put("music",new MediaPlayer(new Media(new File("src/main/resources/Retro_lyder.mp3").toURI().toString())));
+		sounds.put("gameOver", new MediaPlayer(new Media(new File("src/main/resources/gameOver.wav").toURI().toString())));
+		sounds.put("heal", new MediaPlayer(new Media(new File("src/main/resources/heal.mp3").toURI().toString())));
+		sounds.put("hit",new MediaPlayer(new Media(new File("src/main/resources/hit.wav").toURI().toString())));
 	}
-	public void initSounds() {
-	
-	}
-	public void addMusic(double volume) {	
-		Media media1 = new Media(new File("src/main/resources/hit.wav").toURI().toString());
-		hit = new MediaPlayer(media1);
-		hit.setVolume(volume);
-		Media media = new Media(new File("src/main/java/Hpack/Retro_lyder.mp3").toURI().toString());
-		mediaPlayer = new MediaPlayer(media);
-		mediaPlayer.setVolume(volume);
-		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-		mediaPlayer.play();
+	public void addMusic(double volume) {
+		sounds.forEach((k,v) -> v.setVolume(volume));
+		MediaPlayer music = sounds.get("music");
+		music.setCycleCount(MediaPlayer.INDEFINITE);
+		music.play();	
 	}
 	public ImageView getTrapIcon() {
 		return trapIcon;
 	}
 	public void setMediaVolume(double volume) {
-		mediaPlayer.setVolume(volume);
-		hit.setVolume(volume);
+		sounds.forEach((k,v) -> v.setVolume(volume));
 	}
 	public void pauseMusic() {
-		mediaPlayer.pause();
+		sounds.get("music").pause();
 	}
 	public void resumeMusic() {
-		mediaPlayer.play();
-	}
-	public void addBackground() {
-		BackgroundImage bgI = new BackgroundImage(new Image("HPack/Grass.png",600.0,600.0,false,true
-				), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-		          BackgroundSize.DEFAULT);
-		gamePane.setBackground(new Background(bgI));
-	}
+		sounds.get("music").play();
+	}	
 	public void setYears(String years) {
 		this.years.setText(years);
 	}
