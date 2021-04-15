@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
@@ -7,18 +8,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HPack.HunterController">
    <children>
-      <Button fx:id="Pause" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#Pause" text="Pause" />
+      <Button fx:id="Pause" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#Pause" text="Resume" />
       <Button fx:id="help" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="0.0" layoutX="6.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#help" prefHeight="30.0" prefWidth="30.0">
          <graphic>
             <ImageView fitHeight="54.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@help.png" />
+                  <Image url="help.png" />
                </image>
             </ImageView>
          </graphic>
@@ -27,18 +29,21 @@
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@sound.png" />
+                  <Image url="sound.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
-      <Pane fx:id="gamePane" layoutX="-50.0" prefHeight="600.0" prefWidth="700.0" />
+      <Pane fx:id="gamePane" layoutX="-50.0" prefHeight="600.0" prefWidth="700.0" style="-fx-background-image: url(&quot;Grass.png&quot;);">
+         <children>
+            <Button fx:id="play" disable="true" focusTraversable="false" layoutX="236.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#play" prefHeight="25.0" prefWidth="232.0" text="Play" visible="false" />
+         </children></Pane>
       <Slider fx:id="volumeSlider" blockIncrement="0.01" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" />
       <BorderPane layoutX="488.0" layoutY="604.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: grey;">
          <center>
             <ImageView fx:id="trapIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="@trap.png" />
+                  <Image url="trap.png" />
                </image>
             </ImageView>
          </center>
@@ -83,5 +88,131 @@
             <Rectangle fx:id="thirst" fill="#23b4db" height="15.0" smooth="false" stroke="TRANSPARENT" strokeType="OUTSIDE" strokeWidth="0.0" width="62.0" BorderPane.alignment="TOP_LEFT" />
          </center>
       </BorderPane>
+      <Text fx:id="header" fill="#e42121" layoutX="146.0" layoutY="-29.0" stroke="#362b2b" strokeType="OUTSIDE" strokeWidth="5.0" text="Hunter" textAlignment="CENTER">
+         <font>
+            <Font name="Palatino Linotype" size="96.0" />
+         </font>
+      </Text>
+      <Pane fx:id="infoPane" disable="true" layoutX="50" layoutY="50.0" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #ebebeb; -fx-border-width: 5; -fx-border-color: grey;" visible="false">
+               <children>
+                  <Group layoutX="95.0" layoutY="42.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Move the             around with">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="40.0" fitWidth="58.0" layoutX="255.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="arrows.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="40.0" fitWidth="58.0" layoutX="96.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="hunterD.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Group layoutX="95.0" layoutY="240.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place             with">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="28.0" fitWidth="101.0" layoutX="151.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="spacebar.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="53.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="trap.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Group layoutX="193.0" layoutY="279.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to get              from">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="35.0" fitWidth="51.0" layoutX="170.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="rabbit.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="26.0" fitWidth="31.0" layoutX="64.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="rabbitMeat.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Group layoutX="154.0" layoutY="139.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="avoid             and">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="40.0" fitWidth="58.0" layoutX="52.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="bird.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="37.0" fitWidth="65.0" layoutX="150.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="rabbit.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Group layoutX="95.0" layoutY="378.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drink           , eat           and pick up  " wrappingWidth="295.11328125">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="32.0" fitWidth="33.0" layoutX="54.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="water.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="28.0" fitWidth="91.0" layoutX="138.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="rabbitMeat.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="283.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="trap.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Group layoutX="173.0" layoutY="417.0">
+                     <children>
+                        <Text layoutX="-2.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" with">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="28.0" fitWidth="101.0" layoutX="50.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="spacebar.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Group>
+                  <Line endX="356.0" layoutX="90.0" layoutY="105.0" startX="-41.0" />
+                  <Line endX="356.0" layoutX="90.0" layoutY="213.0" startX="-41.0" />
+                  <Line endX="356.0" layoutX="90.0" layoutY="346.0" startX="-41.0" />
+               </children>
+            </Pane>
    </children>
 </Pane>
