@@ -3,7 +3,7 @@ package HPack;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class DynamicAnimal implements DynamicObject{
+public class DynamicAnimal implements GameObject{
 	private double X;
 	private double Y;
 	private double speed = 3;

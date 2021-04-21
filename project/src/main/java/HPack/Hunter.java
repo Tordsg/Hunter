@@ -12,7 +12,19 @@ public class Hunter implements GameObject{
 	private double thirst = 62;
 	private double width = 22;
 	private double height = 35;
+	private String type = "hunter";
+	private ImageView imageView;
 	
+	Hunter(double X, double Y, ImageView imageView, Image image){
+		imageView.setImage(image);
+		imageView.setFitHeight(height);
+		imageView.setFitWidth(width);
+		imageView.setX(X);
+		imageView.setY(Y);
+		this.imageView = imageView;
+		this.X = X;
+		this.Y = Y;
+	}
 	public double getHealth() {
 		return health;
 	}
@@ -31,20 +43,7 @@ public class Hunter implements GameObject{
 	public void setThirst(double thirst) {
 		this.thirst = thirst;
 	}
-	private String type = "hunter";
-	private ImageView imageView;
 	
-	 
-	Hunter(double X, double Y, ImageView imageView, Image image){
-		imageView.setImage(image);
-		imageView.setFitHeight(height);
-		imageView.setFitWidth(width);
-		imageView.setX(X);
-		imageView.setY(Y);
-		this.imageView = imageView;
-		this.X = X;
-		this.Y = Y;
-	}
 	public double getSpeed() {
 		return speed;
 	}

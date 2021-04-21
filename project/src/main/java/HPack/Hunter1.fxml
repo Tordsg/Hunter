@@ -15,7 +15,7 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HPack.HunterController">
    <children>
-      <Button fx:id="Pause" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#Pause" text="Resume" />
+      <Button fx:id="Save" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#save" text="Load" />
       <Button fx:id="help" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="0.0" layoutX="6.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#help" prefHeight="30.0" prefWidth="30.0">
          <graphic>
             <ImageView fitHeight="54.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
@@ -38,7 +38,7 @@
          <children>
             <Button fx:id="play" disable="true" focusTraversable="false" layoutX="236.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#play" prefHeight="25.0" prefWidth="232.0" text="Play" visible="false" />
          </children></Pane>
-      <Slider fx:id="volumeSlider" blockIncrement="0.01" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" />
+      <Slider fx:id="volumeSlider" blockIncrement="0.01" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" disable="true" />
       <BorderPane layoutX="488.0" layoutY="604.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: grey;">
          <center>
             <ImageView fx:id="trapIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
