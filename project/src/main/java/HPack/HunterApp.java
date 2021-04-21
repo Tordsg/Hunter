@@ -10,12 +10,15 @@ import javafx.stage.Stage;
 
 public class HunterApp extends Application{
 
-	static boolean up = false;
-	static boolean down = false;
-	static boolean left = false;
-	static boolean right = false;
-	static boolean interact = false;
 	
+	private static boolean up = false;
+	private static boolean down = false;
+	private static boolean left = false;
+	private static boolean right = false;
+	private static boolean interact = false;
+	
+	
+
 	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Hunter");
 		Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Hunter1.FXML")));
@@ -51,4 +54,43 @@ public class HunterApp extends Application{
 	public static void main(final String[] args) {
 		Application.launch(args);
 	}
+	public static void setInteract(boolean interact) {
+		HunterApp.interact = interact;
+	}
+
+	public static boolean isUp() {
+		return up;
+	}
+
+	public static boolean isDown() {
+		return down;
+	}
+
+	public static boolean isLeft() {
+		return left;
+	}
+
+	public static boolean isRight() {
+		return right;
+	}
+
+	public static boolean isInteract() {
+		return interact;
+	}
+	public static void setUp(boolean up) {
+		HunterApp.up = up;
+	}
+
+	public static void setDown(boolean down) {
+		HunterApp.down = down;
+	}
+
+	public static void setLeft(boolean left) {
+		HunterApp.left = left;
+	}
+
+	public static void setRight(boolean right) {
+		HunterApp.right = right;
+	}
+
 }
