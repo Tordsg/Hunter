@@ -31,14 +31,18 @@ public class DynamicAnimal implements GameObject{
 		
 	}
 	public void setPosition(double x, double y) {
+		if(imageView!=null) {
 		imageView.setY(y);
 		imageView.setX(x);
+		}
 		this.X = x;
 		this.Y = y;
 	}
 	@Override
 	public void setX(double x) {
-		imageView.setX(x);
+		if(imageView!=null) {
+			imageView.setX(x);
+		}
 		this.X = x;
 		
 	}
@@ -47,7 +51,9 @@ public class DynamicAnimal implements GameObject{
 	}
 	@Override
 	public void setY(double y) {
-		imageView.setY(y);
+		if(imageView!=null) {
+			imageView.setY(y);
+		}
 		this.Y = y;
 		
 	}
@@ -55,11 +61,13 @@ public class DynamicAnimal implements GameObject{
 		return imageView;
 	}
 	public void setImageView(ImageView imageView, Image image) {
+		if(imageView!=null) {
 		imageView.setImage(image);
 		imageView.setX(X);
 		imageView.setY(Y);
 		imageView.setFitHeight(height);
 		imageView.setFitWidth(width);
 		this.imageView = imageView;	
+		}
 	}
 }

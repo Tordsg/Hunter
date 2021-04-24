@@ -6,7 +6,7 @@ public class Movement extends AnimationTimer{
 	private Game game;
 	private double delta;
 	private long lastFrame;
-	Movement(Game game){
+	public Movement(Game game){
 		this.game = game;
 	}
 	@Override

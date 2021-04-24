@@ -4,7 +4,7 @@ public class IncrementInit {
 	private double time = 0;
 	private double lastInit = 0;
 	private double increment;
-	IncrementInit(int increment){
+	public IncrementInit(int increment){
 		this.increment = increment;
 	}
 	public boolean update(double delta) {

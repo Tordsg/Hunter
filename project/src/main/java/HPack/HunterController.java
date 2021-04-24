@@ -2,6 +2,8 @@ package HPack;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 
-public class HunterController {
+public class HunterController implements Listener{
 	@FXML
 	private Pane pane, gamePane, infoPane;
 	@FXML
@@ -29,7 +31,8 @@ public class HunterController {
 	@FXML
 	private ImageView trapIcon;
 	private double volume = 0.03;
-	private Game game = new Game(this);
+	private Game game = new Game();
+	private Timer timer = new Timer(game,this);
 	private static HashMap<String, Image> images = new HashMap<String,Image>();
 	private static HashMap<String, MediaPlayer> sounds = new HashMap<String, MediaPlayer>();
 	
@@ -57,9 +60,11 @@ public class HunterController {
 	
 	@FXML
 	public void initialize() {
+		game.addListener(this);
+		game.setTimer(timer);
+		game.init();
 		headerUp(false);
 		addMusic(volume);
-		game.addPlayer();
 	}
 	@FXML
 	public void play() {
@@ -79,7 +84,9 @@ public class HunterController {
 			game.save();
 		} else {
 			Save.setText("Save");
+			removeObject(game.getHunter());
 			game.load();
+			addObject(game.getHunter());
 			headerUp(true);
 			}
 		}
@@ -87,7 +94,7 @@ public class HunterController {
 	public void help() {
 		if(infoPane.isVisible()) {
 			if(!Save.getText().equals("Load")) {
-				game.getTimer().resume();
+				timer.start();
 				game.getMovement().start();
 			}
 			infoPane.setVisible(false);
@@ -97,7 +104,7 @@ public class HunterController {
 			infoPane.setDisable(false);
 			infoPane.toFront();
 			if(!Save.getText().equals("Load")) {
-			game.getTimer().pause();
+			timer.pause();
 			game.getMovement().stop();
 			}
 		}
@@ -126,39 +133,12 @@ public class HunterController {
 		volumeSlider.setDisable(true);
 		volumeSlider.setVisible(false);
 	}
-	private void headerUp(boolean direction){
-		AnimationTimer up = new AnimationTimer() {
-			long last = System.nanoTime();
-			long delta;
-			@Override
-			public void handle(long now) {
-				delta = now-last;
-				last = now;
-				if(direction) {
-					play.setVisible(false);
-					if(header.getLayoutY()<-200) {
-						this.stop();
-						header.setVisible(false);
-						header.setDisable(true);
-					}
-					header.setLayoutY(header.getLayoutY()-delta/2e6);
-				}
-				else {
-					Save.setDisable(true);
-					header.setVisible(true);
-					header.setDisable(false);
-					if(header.getLayoutY()>=175) {
-						Save.setDisable(false);
-						play.setVisible(true);
-						play.setDisable(false);
-						play.toFront();
-						this.stop();
-					}
-					header.setLayoutY(header.getLayoutY()+delta/6e6);
-				}
-			}
-		};
-		up.start();
+	
+	public void remove(ImageView view) {
+		gamePane.getChildren().remove(view);
+	}
+	public void add(ImageView view) {
+		gamePane.getChildren().add(view);
 	}
 	public void nextImages(String type) {
 		for(DynamicAnimal obj : game.getDynamicAnimals()) {
@@ -222,24 +202,72 @@ public class HunterController {
 	public void setYears(String years) {
 		this.years.setText(years);
 	}
-	public Rectangle getHealth() {
-		return health;
+	private void headerUp(boolean direction){
+		AnimationTimer up = new AnimationTimer() {
+			long last = System.nanoTime();
+			long delta;
+			@Override
+			public void handle(long now) {
+				delta = now-last;
+				last = now;
+				if(direction) {
+					play.setVisible(false);
+					if(header.getLayoutY()<-200) {
+						this.stop();
+						header.setVisible(false);
+						header.setDisable(true);
+					}
+					header.setLayoutY(header.getLayoutY()-delta/2e6);
+				}
+				else {
+					Save.setDisable(true);
+					header.setVisible(true);
+					header.setDisable(false);
+					if(header.getLayoutY()>=175) {
+						Save.setDisable(false);
+						play.setVisible(true);
+						play.setDisable(false);
+						play.toFront();
+						this.stop();
+					}
+					header.setLayoutY(header.getLayoutY()+delta/6e6);
+				}
+			}
+		};
+		up.start();
 	}
-	public Rectangle getHunger() {
-		return hunger;
+	public void updateTrapIcon(boolean trapIcon) {
+		this.trapIcon.setVisible(trapIcon);
 	}
-	public Rectangle getThirst() {
-		return thirst;
+	public void addObjects(List<GameObject> objects) {
+		objects.forEach(o -> {
+			if(!gamePane.getChildren().contains(o.getImageView())) {
+				gamePane.getChildren().add(o.getImageView());
+			}
+		});
 	}
-	public void setHealth(double health) {
-		game.getHunter().setHealth(health);
-		this.health.setWidth(health);
+	public void removeObjects(List<GameObject> objects) {
+		objects.forEach(o -> {
+			if(gamePane.getChildren().contains(o.getImageView())) {
+				gamePane.getChildren().remove(o.getImageView());
+			}
+		});
 	}
-	public void setThirst(double thirst) {
-		game.getHunter().setThirst(thirst);
-		getThirst().setWidth(thirst);
-	}public void setHunger(double hunger) {
-		game.getHunter().setHunger(hunger);
-		this.hunger.setWidth(hunger);
+	public void addObject(GameObject obj) {
+		gamePane.getChildren().add(obj.getImageView());
+	}
+	public void removeObject(GameObject obj) {
+		gamePane.getChildren().remove(obj.getImageView());
+	}
+	public void updateDays(int days) {
+		this.days.setText(String.valueOf(days));
+	}
+	public void updateYears(int years) {
+		this.years.setText(String.valueOf(years));
+	}
+	public void setStats(Hunter hunter) {
+		this.health.setWidth(hunter.getHealth());
+		this.hunger.setWidth(hunter.getHunger());
+		this.thirst.setWidth(hunter.getThirst());
 	}
 }

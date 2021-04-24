@@ -30,11 +30,15 @@ public class Item implements GameObject{
 		return height;
 	}
 	public void setX(double X) {
+		if(imageView!=null) {
 		imageView.setX(X);
+		}
 		this.X = X;
 	}
 	public void setY(double Y) {
-		imageView.setY(Y);
+		if(imageView!=null) {
+			imageView.setY(Y);
+		}
 		this.Y = Y;
 	}
 	public String getType() {
@@ -47,12 +51,14 @@ public class Item implements GameObject{
 		return imageView;
 	}
 	public void setImageView(ImageView imageView, Image image) {
+		if(imageView!=null) {
 		imageView.setImage(image);
 		imageView.setX(X);
 		imageView.setY(Y);
 		imageView.setFitHeight(height);
 		imageView.setFitWidth(width);
 		this.imageView = imageView;	
+		}
 	}
 
 }

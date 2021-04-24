@@ -9,63 +9,70 @@ import javafx.scene.image.ImageView;
 public class Game {
 	private List<GameObject> objects = new ArrayList<GameObject>(); 
 	private List<DynamicAnimal> dynamicAnimals= new ArrayList<DynamicAnimal>();
-	private HunterController controller;
 	private Timer timer;
+	private int days, years;
 	private Movement movement = new Movement(this);
-	private ToFile toFile = new ToFile(this);
+	private ToFile toFile = new ToFile();
 	private double time = 0;
 	private Hunter hunter;
 	private Item trap,trapHitBox;
-	private boolean check = false;
+	private boolean check = true;
+	private Listener listener;
+	private boolean trapIcon = true;
 	
-	Game(HunterController controller){
-		this.controller = controller;
+	public void init() {
+		spawnPlayer();
 	}
-	
 	public void start() {
-		timer = new Timer(this);
 		HunterController.getSounds().get("gameOver").stop();
+		days = 0;
+		years = 0;
 		timer.start();
 		movement.start();
 	}
+
 	public void save() {
-		toFile.write();
+		toFile.write(objects, hunter, timer.getTime(),days,years);
 	}
 	public void load() {
 		start();
-		toFile.read();
+		objects = toFile.readObjects();
+		hunter = toFile.readHunter();
+		days = toFile.readDays();
+		years = toFile.readYears();
+		time = toFile.readTime();
 		objects.forEach(o -> {
-			if(o.getType().equals("trap")) controller.getTrapIcon().setVisible(false);
+			if(o.getType().equals("trap")) {
+				trapIcon = false;
+				this.trap = (Item) o;
+			}
+			if(o.getClass().getSimpleName().equals("DynamicAnimal")) dynamicAnimals.add((DynamicAnimal) o);
 		});
-		dynamicAnimals.forEach(o -> {
-			
-			controller.getGamePane().getChildren().add(o.getImageView());
-		});
-		controller.getGamePane().getChildren().add(hunter.getImageView());
+		if(objects.contains(trap)) {
+			remove(trap);
+			initGameObject("trap", trap.getX(), trap.getY());
+		}
 		orderZ();
 	}
 	public void gameOver() {
 		timer.stop();
 		movement.stop();
-		controller.getGamePane().getChildren().remove(hunter.getImageView());
-		controller.setHealth(62);
-		controller.setHunger(62);
-		controller.setThirst(62);
+		hunter.setHunger(62);
+		hunter.setHealth(62);
+		hunter.setThirst(62);
 		HunterApp.setUp(false);
 		HunterApp.setDown(false);
 		HunterApp.setLeft(false);
 		HunterApp.setRight(false);
-		controller.getTrapIcon().setVisible(true);
-		objects.forEach(o -> controller.getGamePane().getChildren().remove(o.getImageView()));
+		trapIcon = true;
 		objects.clear();
-		addPlayer(); 
-		hunter.setImageView(hunter.getImageView(),HunterController.getImages().get("hunterD"));
+		dynamicAnimals.clear();
+		spawnPlayer();
 	}
-	public void addPlayer() {
+	public void spawnPlayer() {
 		Hunter hunter = new Hunter(338,270,new ImageView(),HunterController.getImages().get("hunterD"));
 		this.hunter = hunter;
-		controller.getGamePane().getChildren().add(hunter.getImageView());
-		
+		if(listener!=null) listener.addObject(hunter);
 	}
 	public void moveAnimal(double amount) {
 		ListIterator<DynamicAnimal> iterator = dynamicAnimals.listIterator();
@@ -96,7 +103,6 @@ public class Game {
 		case "trap": Item obj5 = new Item(); initClassObject(obj5,x,y,type); this.trap = obj5; initGameObject("trapHitBox", x + obj5.getWidth()/2, y+obj5.getHeight()/2); break;
 		case "trapHitBox": Item obj6 = new Item(); initClassObject(obj6,x,y,type);  obj6.getImageView().setVisible(false); obj6.setWidth(0.01); obj6.setHeight(0.01); this.trapHitBox = obj6; break;
 		}
-		orderZ();
 	}
 	private void initClassObject(GameObject obj, double x, double y, String type) {
 		obj.setImageView(new ImageView(), HunterController.getImages().get(type));
@@ -105,30 +111,29 @@ public class Game {
 		obj.setY(y);
 		add(obj);
 	}
-	private void orderZ() {
-		getObjects().sort(Comparator.comparing(GameObject::getType));
-		for(GameObject obj : getObjects()) {
+	public void orderZ() {
+		objects.sort(Comparator.comparing(GameObject::getType));
+		for(GameObject obj : objects) {
 			if(!obj.getClass().getSimpleName().equals("DynamicAnimal")) {
 				obj.getImageView().toBack();
 			}
 		}
 	}
 	public void add(GameObject obj) {
-		controller.getGamePane().getChildren().add(obj.getImageView());
 		objects.add(obj);
 		if(obj.getClass().getSimpleName().equals("DynamicAnimal")) {
 		dynamicAnimals.add((DynamicAnimal)obj);
 		}
+		if(listener!=null) listener.addObject(obj);
 	}
 	public void remove(GameObject obj) {
-		controller.getGamePane().getChildren().remove(obj.getImageView());
 		objects.remove(obj);
 		if(obj.getClass().getSimpleName().equals("DynamicAnimal")) {
 		dynamicAnimals.remove(obj);
 		}
+		if(listener!=null) listener.removeObject(obj);
 	}
 	public void remove(GameObject obj, boolean b) {
-		controller.getGamePane().getChildren().remove(obj.getImageView());
 		if(b) {
 			objects.remove(obj);
 		} else {
@@ -136,6 +141,7 @@ public class Game {
 			dynamicAnimals.remove(obj);
 			}
 		}
+		if(listener!=null) listener.removeObject(obj);
 	}
 	public void objectInteraction() {
 		ListIterator<GameObject> iterator = objects.listIterator();
@@ -143,9 +149,9 @@ public class Game {
 			GameObject next = iterator.next();
 			if(!next.getClass().getSimpleName().toString().equals("DynamicAnimal") && GameObject.isOver(next, hunter)) {
 				switch(next.getType()) {
-				case "rabbitMeat": controller.setHunger(62); break;
-				case "trap" : controller.getTrapIcon().setVisible(true); check = false; break;
-				case "water": controller.setThirst(62); break;
+				case "rabbitMeat": hunter.setHunger(62);; break;
+				case "trap" : trapIcon = true; check = false; break;
+				case "water": hunter.setThirst(62); break;
 				}
 				HunterApp.setInteract(false);
 				remove(next, false);
@@ -153,7 +159,7 @@ public class Game {
 			}
 		}
 		
-		if(controller.getTrapIcon().isVisible() && check) {
+		if(trapIcon && check) {
 			ListIterator<GameObject> iterator2 = objects.listIterator();
 			while(iterator2.hasNext()) {
 				GameObject next = iterator2.next();
@@ -162,16 +168,32 @@ public class Game {
 					iterator2.remove();
 				}
 			}
-			initGameObject("trap", hunter.getX(),hunter.getY());
+			initGameObject("trap", hunter.getX(),hunter.getY()+10);
 			trap.getImageView().toBack();
-			controller.getTrapIcon().setVisible(false);
+			trapIcon = false;
 			HunterApp.setInteract(false);
 		} else check = true;
 	}
-	public HunterController getController() {
-		return controller;
+	public boolean isTrapIcon() {
+		return trapIcon;
+	}	
+	public void setTimer(Timer timer) {
+		this.timer = timer;
 	}
-
+	public void setTrapIcon(boolean trapIcon) {
+		this.trapIcon = trapIcon;
+	}
+	public void addListener(Listener listener) {
+		this.listener = listener;
+	}
+	public void updateListener() {
+		if(listener!=null) {
+			listener.updateTrapIcon(trapIcon);
+			listener.updateYears(years);
+			listener.updateDays(days);
+			listener.setStats(hunter);
+		}
+	}
 	public Movement getMovement() {
 		return movement;
 	}
@@ -181,7 +203,7 @@ public class Game {
 	public Item getTrapHitBox() {
 		return trapHitBox;
 	}
-	List<GameObject> getObjects(){
+	public List<GameObject> getObjects(){
 		return objects;
 	}
 	public List<DynamicAnimal> getDynamicAnimals(){
@@ -204,5 +226,12 @@ public class Game {
 
 	public Timer getTimer() {
 		return timer;
+	}
+	public void increaseDays() {
+		days++;
+		if(days==365) {
+			days = 0;
+			years++;
+		}
 	}
 }

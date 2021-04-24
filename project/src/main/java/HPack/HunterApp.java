@@ -10,15 +10,12 @@ import javafx.stage.Stage;
 
 public class HunterApp extends Application{
 
-	
 	private static boolean up = false;
 	private static boolean down = false;
 	private static boolean left = false;
 	private static boolean right = false;
 	private static boolean interact = false;
 	
-	
-
 	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Hunter");
 		Scene scene = new Scene(FXMLLoader.load(getClass().getResource("Hunter1.FXML")));

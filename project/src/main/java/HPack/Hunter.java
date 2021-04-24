@@ -15,12 +15,14 @@ public class Hunter implements GameObject{
 	private String type = "hunter";
 	private ImageView imageView;
 	
-	Hunter(double X, double Y, ImageView imageView, Image image){
-		imageView.setImage(image);
-		imageView.setFitHeight(height);
-		imageView.setFitWidth(width);
-		imageView.setX(X);
-		imageView.setY(Y);
+	public Hunter(double X, double Y, ImageView imageView, Image image){
+		if(imageView!=null) {
+			imageView.setImage(image);
+			imageView.setFitHeight(height);
+			imageView.setFitWidth(width);
+			imageView.setX(X);
+			imageView.setY(Y);
+		}
 		this.imageView = imageView;
 		this.X = X;
 		this.Y = Y;
@@ -54,19 +56,25 @@ public class Hunter implements GameObject{
 		return X;
 	}
 	public void setX(double X) {
-		imageView.setX(X);
+		if(imageView!=null) {
+			imageView.setX(X);
+		}
 		this.X = X;
 	}
 	public double getY() {
 		return Y;
 	}
 	public void setY(double Y) {
-		imageView.setY(Y);
+		if(imageView!=null) {
+			imageView.setY(Y);
+		}
 		this.Y=Y;
 	}
 	public void setPosition(double X,double Y) {
-		imageView.setX(X);
-		imageView.setY(Y);
+		if(imageView!=null) {
+			imageView.setX(X);
+			imageView.setY(Y);
+		}
 		this.X = X;
 		this.Y = Y;
 	}
@@ -86,11 +94,13 @@ public class Hunter implements GameObject{
 		return imageView;
 	}
 	public void setImageView(ImageView imageView, Image image) {
+		if(imageView!=null) {
 		imageView.setImage(image);
 		imageView.setX(X);
 		imageView.setY(Y);
 		imageView.setFitHeight(height);
 		imageView.setFitWidth(width);
 		this.imageView = imageView;	
+		}
 	}
 }
