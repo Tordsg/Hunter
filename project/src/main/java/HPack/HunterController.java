@@ -331,5 +331,4 @@ public class HunterController implements Listener{
 	public static void setConsume(boolean consume) {
 		HunterController.consume = consume;
 	}
-	
 }

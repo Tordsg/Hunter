@@ -32,7 +32,9 @@ public class DynamicAnimal implements GameObject{
 		this.Y = y;
 	}
 	public void setX(double x) {
+		if(speed>0) {
 		this.X = x;
+		}
 		
 	}
 	public double getSpeed() {

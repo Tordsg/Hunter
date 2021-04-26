@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import HPack.*;
 
 public class ToFileTest {
-	ToFile toFile;
-	String path  = "src/test/resources/gameState.txt";
+	private String path  = "src/test/resources/gameState.txt";
 
 	@Test
 	public void notLegalFile() {

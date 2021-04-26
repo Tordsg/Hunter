@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import HPack.*;
 
-class GameObjectTest {
-	Item item;
-	DynamicAnimal animal;
+public class GameObjectTest {
+	private Item item;
+	private DynamicAnimal animal;
 	@Test
 	public void isOver() {
 		item = new Item();
