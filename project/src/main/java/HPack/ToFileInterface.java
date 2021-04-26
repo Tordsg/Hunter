@@ -9,4 +9,5 @@ public interface ToFileInterface {
 	int readDays();
 	int readYears();
 	double readTime();
+	boolean isLegalFile();
 }

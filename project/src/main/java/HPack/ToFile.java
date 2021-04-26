@@ -7,11 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import javafx.scene.image.ImageView;
 
 public class ToFile implements ToFileInterface{
-	List<GameObject> objects = new ArrayList<GameObject>();
-	Hunter hunter;
+	private List<GameObject> objects = new ArrayList<GameObject>();
 	private String path = "src/main/resources/gameState.txt";
 	
 	public void makeFile() {
@@ -27,21 +25,25 @@ public class ToFile implements ToFileInterface{
 		try {
 			 makeFile();
 			 FileWriter writer = new FileWriter(path);
-			 for(GameObject obj: objs) {
-				 if(obj.getType().equals("trapHitBox")) continue;
-				 String c = obj.getClass().getSimpleName().toString();
-				 String type = obj.getType();
-				 String x = Double.toString(obj.getX());
-				 String y = Double.toString(obj.getY());
-				 String image = "";
-				 image = obj.getImageView().getImage().getUrl().substring(75,obj.getImageView().getImage().getUrl().length()-4);
-				 String objInfo = c + "," + type + "," + x + "," + y+","+image+"\n";
-				 writer.write(objInfo);
-			 }
-			 writer.write(hunter.getClass().getSimpleName().toString() + "," + 
+			 objs.forEach(o -> {
+				 if(!o.getType().equals("trapHitBox"))
+					try {
+						writer.write(
+							o.getClass().getSimpleName() + "," + 
+							o.getType() + "," + 
+							o.getImage() + "," + 
+							o.getX() + "," + 
+							o.getY() + "\n");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			 });
+			 writer.write(
+					 hunter.getClass().getSimpleName() + "," + 
+					 hunter.getType() + "," +
+					 hunter.getImage() + "," + 
 					 hunter.getX() + "," + 
 					 hunter.getY() + "," + 
-					 hunter.getImageView().getImage().getUrl().substring(75,hunter.getImageView().getImage().getUrl().length()-4) + "," + 
 					 days + "," + 
 					 years + "," + 
 					 hunter.getHealth() + "," + 
@@ -49,15 +51,13 @@ public class ToFile implements ToFileInterface{
 					 hunter.getThirst() + "," + 
 					 time);
 			 writer.close();
-			 System.out.println("Fil stored");
-			 
 		} catch (IOException e) {
-		      System.out.println("Could not write to file.");
 		      e.printStackTrace();
 		    }
 	}
 	public List<GameObject> readObjects() {
 		try {
+			boolean trap = false;
 			objects.clear();
 			makeFile();
 		    Scanner scanner = new Scanner(new File(path));
@@ -68,49 +68,124 @@ public class ToFile implements ToFileInterface{
 				 switch(line[0]) {
 					 case "Item": Item item = new Item();
 							 item.setType(line[1]); 
-							 item.setImageView(new ImageView(), HunterController.getImages().get(line[1]));
-							 item.setX(Double.parseDouble(line[2]));
-							 item.setY(Double.parseDouble(line[3]));
+							 item.setImage(line[2]);
+							 item.setX(Double.parseDouble(line[3]));
+							 item.setY(Double.parseDouble(line[4]));
+							 if(trap!=false && line[1].equals("trap")) break; 
+							 if(line[1].equals("trap")) trap = true;
 							 objects.add(item);
 					 		 break;
 					 case "DynamicAnimal": DynamicAnimal dynamicAnimal = new DynamicAnimal();
 					 		 dynamicAnimal.setType(line[1]);
-					 		 dynamicAnimal.setImageView(new ImageView(), HunterController.getImages().get(line[4]));
-					 		 dynamicAnimal.setPosition(Double.parseDouble(line[2]), Double.parseDouble(line[3]));
+					 		 dynamicAnimal.setImage(line[2]);
+					 		 dynamicAnimal.setPosition(Double.parseDouble(line[3]), Double.parseDouble(line[4]));
 					 		 objects.add(dynamicAnimal);
 					 		 break;
 					 }
 			 }
 			 scanner.close();
-			 System.out.println("Objects read");
 		} catch (FileNotFoundException e) {
-		      System.out.println("Could not load file.");
 		      e.printStackTrace();
 		}
 		return objects;
 	}
 	public Hunter readHunter() {
 		String[] line = fetchLastLine();
-		Hunter hunter = new Hunter(Double.parseDouble(line[1]),Double.parseDouble(line[2]), new ImageView(), HunterController.getImages().get(line[3]));
-		hunter.setHealth(Double.parseDouble(line[6]));
-		hunter.setHunger(Double.parseDouble(line[7]));
-		hunter.setThirst(Double.parseDouble(line[8]));
+		Hunter hunter = new Hunter(Double.parseDouble(line[3]),Double.parseDouble(line[4]));
+		hunter.setHealth(Double.parseDouble(line[7]));
+		hunter.setHunger(Double.parseDouble(line[8]));
+		hunter.setThirst(Double.parseDouble(line[9]));
 		return hunter;
 	}
 	public int readDays() {
 		String[] line = fetchLastLine();
-		int days = Integer.parseInt(line[4]);
+		int days = Integer.parseInt(line[5]);
 		return days;
 	}
 	public int readYears() {
 		String[] line = fetchLastLine();
-		int days = Integer.parseInt(line[5]);
+		int days = Integer.parseInt(line[6]);
 		return days;
 	}
 	public double readTime() {
 		String[] line = fetchLastLine();
-		double time = Double.parseDouble(line[9]);
+		double time = Double.parseDouble(line[10]);
 		return time;
+	}
+	public boolean isLegalFile() {
+		try {
+			 makeFile();
+			 Scanner scanner = new Scanner(new File(path));
+			 if(!scanner.hasNextLine()) return false;
+			 while(scanner.hasNextLine()) {
+				 String objInfo = scanner.nextLine();
+				 String[] line = objInfo.split(",");
+				 if(!islegalLine(line)) return false;
+					 
+			}
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		if(fetchLastLine() == null) return false;
+		if(!fetchLastLine()[0].equals("Hunter")) return false;
+		return true;
+	}
+	private boolean islegalLine(String[] line) {
+		if(line.length<5) return false;
+		String type = line[1];
+		String image = line[2];
+		double x,y,health,hunger,thirst,time;
+		int days,years;
+		try {
+		 x = Double.parseDouble(line[3]);
+		 y = Double.parseDouble(line[4]);
+		}catch(NumberFormatException e) {
+			return false;
+		}
+		switch(line[0]) {
+		case "Hunter": {
+			if(line.length<11) return false;
+			if(!line[1].equals("hunter")) return false;
+			if(!image.equals("hunterD") && !image.equals("hunterU") && !image.equals("hunterL") && !image.equals("hunterR")) return false;
+			if(x<50 || x>628) return false;
+			if(y<0 || y>565) return false;
+			try {
+				 days = Integer.parseInt(line[5]);
+				 years = Integer.parseInt(line[6]);
+				 health = Double.parseDouble(line[7]);
+				 hunger = Double.parseDouble(line[8]);
+				 thirst = Double.parseDouble(line[9]);
+				 time = Double.parseDouble(line[10]);
+			} catch(NumberFormatException e) {
+			return false;
+			}
+			if(days<0 || days>364) return false;
+			if(years<0) return false;
+			if(health<0 || health>62) return false;
+			if(hunger<0 || hunger>62) return false;
+			if(thirst<0 || thirst>62) return false;
+			if(time<0) return false;
+			break;
+		}
+		case "Item": {
+			if(!type.equals(image) || (!type.equals("water") && !type.equals("trap") && !type.equals("rabbitMeat"))) return false;
+			if(x<50 || x>626) return false;
+			if(y<0 || y>576) return false;
+			break;
+		}
+		case "DynamicAnimal":{
+			if(type.equals("bird")) {
+				if(!image.equals("bird") && !image.equals("birdU") && !image.equals("bird2") && !image.equals("birdD")) return false;
+			} else if(type.equals("rabbit")) {
+				if(!image.equals("rabbit") && !image.equals("rabbitU") && !image.equals("rabbitD")) return false;
+			} else return false;
+			if(x<22 || x>650) return false;
+			if(y<0 || y>572) return false;
+			break;
+		}
+		default: return false;
+		}
+		return true;
 	}
 	private String[] fetchLastLine() {
 		try {

@@ -1,10 +1,8 @@
 package HPack;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
-import javafx.scene.image.ImageView;
 
 public class Game {
 	private List<GameObject> objects = new ArrayList<GameObject>(); 
@@ -16,61 +14,60 @@ public class Game {
 	private double time = 0;
 	private Hunter hunter;
 	private Item trap,trapHitBox;
-	private boolean check = true;
 	private Listener listener;
 	private boolean trapIcon = true;
 	
-	public void init() {
-		spawnPlayer();
-	}
 	public void start() {
 		HunterController.getSounds().get("gameOver").stop();
 		days = 0;
 		years = 0;
-		timer.start();
+		if(timer!=null)timer.start();
 		movement.start();
 	}
-
 	public void save() {
 		toFile.write(objects, hunter, timer.getTime(),days,years);
 	}
 	public void load() {
-		start();
-		objects = toFile.readObjects();
-		hunter = toFile.readHunter();
-		days = toFile.readDays();
-		years = toFile.readYears();
-		time = toFile.readTime();
-		objects.forEach(o -> {
-			if(o.getType().equals("trap")) {
-				trapIcon = false;
-				this.trap = (Item) o;
+		if(toFile.isLegalFile())	{
+			System.out.println("Loaded from file");
+			objects = toFile.readObjects();
+			hunter = toFile.readHunter();
+			days = toFile.readDays();
+			years = toFile.readYears();
+			time = toFile.readTime();
+			objects.forEach(o -> {
+				if(o.getType().equals("trap")) {
+					trapIcon = false;
+					this.trap = (Item) o;
+				}
+				if(o.getClass().getSimpleName().equals("DynamicAnimal")) dynamicAnimals.add((DynamicAnimal) o);
+				if(listener!=null) listener.addObject(o);
+			});
+			if(objects.contains(trap)) {
+				remove(trap);
+				initGameObject("trap", trap.getX(), trap.getY());
 			}
-			if(o.getClass().getSimpleName().equals("DynamicAnimal")) dynamicAnimals.add((DynamicAnimal) o);
-		});
-		if(objects.contains(trap)) {
-			remove(trap);
-			initGameObject("trap", trap.getX(), trap.getY());
+		} else {
+			System.out.println("Could not read file");
 		}
-		orderZ();
 	}
 	public void gameOver() {
-		timer.stop();
+		if(timer!=null) timer.stop();
 		movement.stop();
 		hunter.setHunger(62);
 		hunter.setHealth(62);
 		hunter.setThirst(62);
-		HunterApp.setUp(false);
-		HunterApp.setDown(false);
-		HunterApp.setLeft(false);
-		HunterApp.setRight(false);
+		HunterController.setUp(false);
+		HunterController.setDown(false);
+		HunterController.setLeft(false);
+		HunterController.setRight(false);
 		trapIcon = true;
 		objects.clear();
 		dynamicAnimals.clear();
 		spawnPlayer();
 	}
 	public void spawnPlayer() {
-		Hunter hunter = new Hunter(338,270,new ImageView(),HunterController.getImages().get("hunterD"));
+		Hunter hunter = new Hunter(338,270);
 		this.hunter = hunter;
 		if(listener!=null) listener.addObject(hunter);
 	}
@@ -80,44 +77,35 @@ public class Game {
 			DynamicAnimal animal = iterator.next();
 			if(animal.getType().equals("bird")) {
 			animal.setX(animal.getX()+amount);
-				if(animal.getX()>670) {
+				if(animal.getX()>650) {
 					remove(animal, true);
 					iterator.remove();
 				}
 			} else if (animal.getType().equals("rabbit")){
 				animal.setX(animal.getX()-amount);
-				if(animal.getX()<30){
+				if(animal.getX()<22){
 					remove(animal, true);
 					iterator.remove();
 				}
 			}
 		}
 	}
-
 	public void initGameObject(String type, double x, double y) {
 		switch(type) {
-		case "rabbit": DynamicAnimal obj = new DynamicAnimal(); initClassObject(obj,x,y,type); break;
-		case "bird": DynamicAnimal obj2 = new DynamicAnimal(); initClassObject(obj2,x,y,type); break;
-		case "water": Item obj3 = new Item(); initClassObject(obj3,x,y,type); break;
-		case "rabbitMeat": Item obj4 = new Item(); initClassObject(obj4,x,y,type); obj4.setHeight(15); break;
-		case "trap": Item obj5 = new Item(); initClassObject(obj5,x,y,type); this.trap = obj5; initGameObject("trapHitBox", x + obj5.getWidth()/2, y+obj5.getHeight()/2); break;
-		case "trapHitBox": Item obj6 = new Item(); initClassObject(obj6,x,y,type);  obj6.getImageView().setVisible(false); obj6.setWidth(0.01); obj6.setHeight(0.01); this.trapHitBox = obj6; break;
+		case "rabbit": DynamicAnimal r = new DynamicAnimal(); initClassObject(r,x,y,type); break;
+		case "bird": DynamicAnimal b = new DynamicAnimal(); initClassObject(b,x,y,type); break;
+		case "water": Item w = new Item(); initClassObject(w,x,y,type); break;
+		case "rabbitMeat": Item rM = new Item(); initClassObject(rM,x,y,type); rM.setHeight(15); break;
+		case "trap": Item t = new Item(); initClassObject(t,x,y,type); this.trap = t; initGameObject("trapHitBox", x + t.getWidth()/2, y+t.getHeight()/2); break;
+		case "trapHitBox": Item tH = new Item(); initClassObject(tH,x,y,type); tH.setWidth(0.01); tH.setHeight(0.01); this.trapHitBox = tH; break;
 		}
 	}
 	private void initClassObject(GameObject obj, double x, double y, String type) {
-		obj.setImageView(new ImageView(), HunterController.getImages().get(type));
+		obj.setImage(type);
 		obj.setType(type);
 		obj.setX(x);
 		obj.setY(y);
 		add(obj);
-	}
-	public void orderZ() {
-		objects.sort(Comparator.comparing(GameObject::getType));
-		for(GameObject obj : objects) {
-			if(!obj.getClass().getSimpleName().equals("DynamicAnimal")) {
-				obj.getImageView().toBack();
-			}
-		}
 	}
 	public void add(GameObject obj) {
 		objects.add(obj);
@@ -143,36 +131,33 @@ public class Game {
 		}
 		if(listener!=null) listener.removeObject(obj);
 	}
-	public void objectInteraction() {
+	public void trap() {
+		if(!trapIcon) {
+			if(GameObject.isOver(trap, hunter)){
+				remove(trapHitBox);
+				remove(trap);
+				trap = null;
+				trapHitBox = null;
+				trapIcon = true;
+			} 
+		}else {
+			initGameObject("trap", hunter.getX(),hunter.getY()+10);
+			trapIcon = false;
+		}
+	}
+	public void consume() {
 		ListIterator<GameObject> iterator = objects.listIterator();
 		while(iterator.hasNext()) {
 			GameObject next = iterator.next();
-			if(!next.getClass().getSimpleName().toString().equals("DynamicAnimal") && GameObject.isOver(next, hunter)) {
+			if((next.getType().equals("water") || next.getType().equals("rabbitMeat")) && GameObject.isOver(next, hunter)) {
 				switch(next.getType()) {
-				case "rabbitMeat": hunter.setHunger(62);; break;
-				case "trap" : trapIcon = true; check = false; break;
+				case "rabbitMeat": hunter.setHunger(62); break;
 				case "water": hunter.setThirst(62); break;
 				}
-				HunterApp.setInteract(false);
 				remove(next, false);
 				iterator.remove();
 			}
 		}
-		
-		if(trapIcon && check) {
-			ListIterator<GameObject> iterator2 = objects.listIterator();
-			while(iterator2.hasNext()) {
-				GameObject next = iterator2.next();
-				if(next.getType().equals("trapHitBox")) {
-					remove(next, false);
-					iterator2.remove();
-				}
-			}
-			initGameObject("trap", hunter.getX(),hunter.getY()+10);
-			trap.getImageView().toBack();
-			trapIcon = false;
-			HunterApp.setInteract(false);
-		} else check = true;
 	}
 	public boolean isTrapIcon() {
 		return trapIcon;
@@ -223,9 +208,11 @@ public class Game {
 	public void setHunter(Hunter hunter) {
 		this.hunter = hunter;
 	}
-
 	public Timer getTimer() {
 		return timer;
+	}
+	public double getTime() {
+		return time;
 	}
 	public void increaseDays() {
 		days++;

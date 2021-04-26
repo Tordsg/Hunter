@@ -9,7 +9,7 @@ public class IncrementInit {
 	}
 	public boolean update(double delta) {
 		time += delta;
-		if(time > lastInit + increment) {
+		if(time >= lastInit + increment) {
 			lastInit = time;
 			return true;
 		}
