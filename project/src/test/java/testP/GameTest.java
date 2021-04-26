@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 import HPack.*;
 
 
-class GameTest {
-	Game game;
+public class GameTest {
+	private Game game;
 
 	@Test
-	void spawnPlayer() {
+	public void spawnPlayer() {
 		game = new Game();
 		game.spawnPlayer();
 		assertTrue(game.getHunter()!=null);
 	}
 	@Test
-	void initGameObject() {
+	public void initGameObject() {
 		game = new Game();
 		game.initGameObject("trap", 0, 0);
 		assertTrue(game.getObjects().stream().anyMatch(o -> o.getType().equals("trap")) && game.getObjects().stream().anyMatch(o -> o.getType().equals("trapHitBox")));
@@ -24,7 +24,7 @@ class GameTest {
 
 	}
 	@Test
-	void moveAnimal() {
+	public void moveAnimal() {
 		game = new Game();
 		DynamicAnimal bird = new DynamicAnimal();
 		bird.setType("bird");
@@ -45,7 +45,7 @@ class GameTest {
 		assertFalse(game.getDynamicAnimals().contains(bird) || game.getDynamicAnimals().contains(rabbit));
 	}
 	@Test
-	void consume() {
+	public void consume() {
 		game = new Game();
 		Item water = new Item();
 		water.setType("water");
