@@ -1,8 +1,5 @@
 package HPack;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 public class DynamicAnimal implements GameObject{
 	private double X;
 	private double Y;
@@ -10,7 +7,7 @@ public class DynamicAnimal implements GameObject{
 	private double width = 28;
 	private double height = 28;
 	private String type;
-	private ImageView imageView;
+	private String image;
 	public double getX() {
 		return X;
 	}
@@ -31,35 +28,41 @@ public class DynamicAnimal implements GameObject{
 		
 	}
 	public void setPosition(double x, double y) {
-		imageView.setY(y);
-		imageView.setX(x);
 		this.X = x;
 		this.Y = y;
 	}
-	@Override
 	public void setX(double x) {
-		imageView.setX(x);
 		this.X = x;
 		
 	}
 	public double getSpeed() {
 		return speed;
 	}
-	@Override
 	public void setY(double y) {
-		imageView.setY(y);
 		this.Y = y;
 		
 	}
-	public ImageView getImageView() {
-		return imageView;
+	public void nextImage() {
+		if(type.equals("bird")) {
+			switch(image) {
+			case "bird" : image = "birdU"; break;
+			case "birdU" : image = "bird2"; break;
+			case "bird2" : image = "birdD"; break;
+			case "birdD" : image = "bird"; break;
+			}
+		}else {
+			switch(image) {
+			case "rabbit" : image = "rabbitU"; break;
+			case "rabbitU" : image = "rabbitD"; break;
+			case "rabbitD" : image = "rabbit"; break;
+			}
+		}
 	}
-	public void setImageView(ImageView imageView, Image image) {
-		imageView.setImage(image);
-		imageView.setX(X);
-		imageView.setY(Y);
-		imageView.setFitHeight(height);
-		imageView.setFitWidth(width);
-		this.imageView = imageView;	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

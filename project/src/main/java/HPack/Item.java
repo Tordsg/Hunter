@@ -1,22 +1,18 @@
 package HPack;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 public class Item implements GameObject{
 	private double X;
 	private double Y;
 	private double height = 24;
 	private double width = 24;
-	public void setHeight(double height) {
+	private String type;
+	private String image;
+		public void setHeight(double height) {
 		this.height = height;
 	}
 	public void setWidth(double width) {
 		this.width = width;
 	}
-	private String type;
-	private ImageView imageView;
-	
 	public double getX() {
 		return X;
 	}
@@ -30,11 +26,10 @@ public class Item implements GameObject{
 		return height;
 	}
 	public void setX(double X) {
-		imageView.setX(X);
+
 		this.X = X;
 	}
 	public void setY(double Y) {
-		imageView.setY(Y);
 		this.Y = Y;
 	}
 	public String getType() {
@@ -43,16 +38,12 @@ public class Item implements GameObject{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public ImageView getImageView() {
-		return imageView;
+	public String getImage() {
+		return image;
 	}
-	public void setImageView(ImageView imageView, Image image) {
-		imageView.setImage(image);
-		imageView.setX(X);
-		imageView.setY(Y);
-		imageView.setFitHeight(height);
-		imageView.setFitWidth(width);
-		this.imageView = imageView;	
+	public void setImage(String image) {
+		this.image = image;
 	}
+	
 
 }
