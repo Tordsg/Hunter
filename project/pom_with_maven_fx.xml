@@ -6,10 +6,11 @@
 
     <dependencies>
         <!-- JavaFX FXML -->
+        
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>15.0.1</version>
+            <version>19</version>
         </dependency>
 
         <!-- JUnit 5 -->
@@ -41,7 +42,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>15</release>
+                    <release>18</release>
                     <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
@@ -60,7 +61,7 @@
                     <options>
                         <option>--enable-preview</option>
                     </options>
-		    <mainClass>project/project.fxui.App</mainClass><!--Endre denne til å peke på din App-klasse om du vil bruke javafx-maven-plugin -->
+		    <mainClass>HPack/HPack.HunterApp</mainClass><!--Endre denne til å peke på din App-klasse om du vil bruke javafx-maven-plugin -->
                 </configuration>
 	</plugin>
         </plugins>
