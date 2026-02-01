@@ -98,9 +98,24 @@ if exist ..\dist\Hunter (
 REM Build module path for jpackage (Windows path format)
 set JAVAFX_MODULE_PATH=%CD%\target\javafx-modules
 
-REM Use app icon if present (create GameIcon.ico from icons\GameIcon.png with an image editor or ImageMagick)
+REM Use app icon if present - use absolute path for jpackage
 set ICON_ARG=
-if exist icons\GameIcon.ico set ICON_ARG=--icon icons\GameIcon.ico
+if exist icons\GameIcon.ico (
+    REM Use absolute path - jpackage requires this on Windows
+    REM %CD% is already in project directory at this point
+    for %%I in ("icons\GameIcon.ico") do set ICON_PATH=%%~fI
+    set ICON_ARG=--icon "%ICON_PATH%"
+    echo Using icon: %ICON_PATH%
+    echo Verifying icon file...
+    if not exist "%ICON_PATH%" (
+        echo ERROR: Icon file not found at %ICON_PATH%
+        set ICON_ARG=
+    )
+) else if exist icons\GameIcon.png (
+    echo WARNING: GameIcon.ico not found, only PNG available.
+    echo Please convert GameIcon.png to GameIcon.ico manually.
+    echo Icon will not be applied to the executable.
+)
 
 jpackage --input target ^
     %ICON_ARG% ^

@@ -51,9 +51,8 @@ echo Release package ready: release\%ZIP_NAME%
 echo.
 echo Next steps:
 echo 1. Test the ZIP by extracting and running Hunter.exe
-echo 2. On Mac, run prepare-release.sh to create Hunter-macOS release assets
-echo 3. Create a GitHub release at: https://github.com/YOUR_USERNAME/YOUR_REPO/releases/new
+echo 2. On Mac, build and copy DMG to release folder
+echo 3. Create a GitHub release (see CREATE_RELEASE.md for instructions)
 echo 4. Upload release\Hunter-Windows-* and release\Hunter-macOS-* as release assets
-echo 5. Add release notes (see RELEASE_GUIDE.md)
 echo.
 pause

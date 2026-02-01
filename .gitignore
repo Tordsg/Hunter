@@ -118,11 +118,18 @@ project/icons/Hunter.iconset/
 *.msi
 
 ### Release Packages ###
-# Release artifacts (release/*.dmg, release/*.zip, release/*.msi) are tracked so you can push them and pull on another machine to create a release with both platforms.
-!release/*.zip
-!release/*.dmg
-!release/*.msi
-!RELEASE_GUIDE.md
+# Don't commit release artifacts - they should only be uploaded to GitHub releases
+release/*
+!release/.gitkeep
+
+### Release Documentation ###
+# Release guide is for local reference only
+CREATE_RELEASE.md
+
+### Icon Conversion ###
+# Generated ICNS files for macOS (ICO is tracked so builds work)
+project/icons/*.iconset
+project/icons/Hunter.icns
 
 ### Game Save Files ###
 # Ignore user game state files; test fixtures in project/src/test/resources are tracked
