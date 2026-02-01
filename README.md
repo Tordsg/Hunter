@@ -26,14 +26,14 @@ Survive as long as possible by managing your health, hunger, and thirst. Hunt ra
 ## 🚀 Running the Game
 
 ### Windows
-1. Download the latest release from [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest)
-2. Download `Hunter-Windows-X.X.X.zip`
+1. Download the latest release from [Releases](https://github.com/Tordsg/Hunter/releases/tag/v1.0.0)
+2. Download `Hunter-Windows-1.0.0.zip`
 3. Extract and run `Hunter.exe`
 4. If `Hunter.exe` doesn't work, try `Hunter-Launcher.bat`
 
 ### macOS
-1. Download the latest release from [Releases](https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest)
-2. Download `Hunter-macOS-X.X.X.dmg`
+1. Download the latest release from [Releases](https://github.com/Tordsg/Hunter/releases/tag/v1.0.0)
+2. Download `Hunter-macOS-1.0.0.dmg`
 3. Install and run the app
 
 ### From Source
