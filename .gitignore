@@ -103,9 +103,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
-project/.mvn/wrapper/maven-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java,maven
 
@@ -121,9 +118,10 @@ project/icons/Hunter.iconset/
 *.msi
 
 ### Release Packages ###
-release/*.zip
-release/*.dmg
-release/*.msi
+# Release artifacts (release/*.dmg, release/*.zip, release/*.msi) are tracked so you can push them and pull on another machine to create a release with both platforms.
+!release/*.zip
+!release/*.dmg
+!release/*.msi
 !RELEASE_GUIDE.md
 
 ### Game Save Files ###

@@ -33,17 +33,16 @@ fi
 
 cd project
 
-# Prefer system Maven (e.g. from Homebrew) when available; otherwise use wrapper
-MVN="mvn"
 if ! command -v mvn >/dev/null 2>&1; then
-  [ -x "./mvnw" ] && MVN="./mvnw" || { echo "ERROR: mvn not found and ./mvnw not executable."; exit 1; }
+  echo "ERROR: mvn not found. Install Maven (e.g. brew install maven) or add it to PATH."
+  exit 1
 fi
 
 echo "Cleaning previous builds..."
-$MVN clean
+mvn clean
 
 echo "Building JAR (tests skipped - run 'mvn test' separately for full test suite)..."
-$MVN package -DskipTests
+mvn package -DskipTests
 
 if [ $? -ne 0 ]; then
     echo "Build failed!"

@@ -39,6 +39,8 @@ This will create in the `release/` folder:
 - `Hunter-macOS-1.0.0.dmg` – ready to upload to GitHub
 - `Hunter-macOS-1.0.0.zip` – ZIP containing the DMG (optional)
 
+**Push releases so you can use both on one machine:** Release artifacts in `release/` are tracked in git. After `./prepare-release.sh` (Mac) or `.\prepare-release.bat` (Windows), add and commit the `release/` files, then push. On your other machine, pull to get the other platform’s builds, add your local build to `release/`, commit and push. Then create one GitHub release with both assets.
+
 ## Step 2: Commit and Tag Your Release
 
 1. **Commit all changes**:
