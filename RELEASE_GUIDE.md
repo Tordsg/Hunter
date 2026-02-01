@@ -139,6 +139,16 @@ Update the README.md to point to the latest release:
 4. Run the Hunter app
 ```
 
+## One-command publish (macOS)
+
+To build, prepare assets, and create a GitHub Release in one go (if you have [GitHub CLI](https://cli.github.com/) installed):
+
+```bash
+./publish-release.sh
+```
+
+This runs `build-mac.sh`, `prepare-release.sh`, then `gh release create` with the DMG and ZIP. If `gh` is not installed, the script prints the manual upload steps.
+
 ## Quick Release Checklist
 
 - [ ] Build works on Windows
