@@ -1,6 +1,5 @@
 package HPack;
 
-import java.io.File;
 import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
@@ -39,25 +38,25 @@ public class HunterController implements Listener{
 
 	
 	static {
-		images.put("trap", new Image("trap.png"));
-		images.put("water",new Image("water.png"));
-		images.put("birdU",new Image("birdU.png"));
-		images.put("bird",new Image("bird.png"));
-		images.put("bird2",new Image("bird2.png"));
-		images.put("birdD",new Image("birdD.png"));
-		images.put("hunterD",new Image("hunterD.png"));
-		images.put("hunterU",new Image("hunterU.png"));
-		images.put("hunterL",new Image("hunterL.png"));
-		images.put("hunterR",new Image("hunterR.png"));
-		images.put("rabbitU",new Image("rabbitU.png"));
-		images.put("rabbit",new Image("rabbit.png"));
-		images.put("rabbitD",new Image("rabbitD.png"));
-		images.put("rabbitMeat",new Image("rabbitMeat.png"));
+		images.put("trap", new Image(HunterController.class.getResourceAsStream("/trap.png")));
+		images.put("water",new Image(HunterController.class.getResourceAsStream("/water.png")));
+		images.put("birdU",new Image(HunterController.class.getResourceAsStream("/birdU.png")));
+		images.put("bird",new Image(HunterController.class.getResourceAsStream("/bird.png")));
+		images.put("bird2",new Image(HunterController.class.getResourceAsStream("/bird2.png")));
+		images.put("birdD",new Image(HunterController.class.getResourceAsStream("/birdD.png")));
+		images.put("hunterD",new Image(HunterController.class.getResourceAsStream("/hunterD.png")));
+		images.put("hunterU",new Image(HunterController.class.getResourceAsStream("/hunterU.png")));
+		images.put("hunterL",new Image(HunterController.class.getResourceAsStream("/hunterL.png")));
+		images.put("hunterR",new Image(HunterController.class.getResourceAsStream("/hunterR.png")));
+		images.put("rabbitU",new Image(HunterController.class.getResourceAsStream("/rabbitU.png")));
+		images.put("rabbit",new Image(HunterController.class.getResourceAsStream("/rabbit.png")));
+		images.put("rabbitD",new Image(HunterController.class.getResourceAsStream("/rabbitD.png")));
+		images.put("rabbitMeat",new Image(HunterController.class.getResourceAsStream("/rabbitMeat.png")));
 		
-		sounds.put("music",new MediaPlayer(new Media(new File("src/main/resources/Retro_lyder.mp3").toURI().toString())));
-		sounds.put("gameOver", new MediaPlayer(new Media(new File("src/main/resources/gameOver.wav").toURI().toString())));
-		sounds.put("heal", new MediaPlayer(new Media(new File("src/main/resources/heal.mp3").toURI().toString())));
-		sounds.put("hit",new MediaPlayer(new Media(new File("src/main/resources/hit.wav").toURI().toString())));
+		sounds.put("music",new MediaPlayer(new Media(HunterController.class.getResource("/Retro_lyder.mp3").toString())));
+		sounds.put("gameOver", new MediaPlayer(new Media(HunterController.class.getResource("/gameOver.wav").toString())));
+		sounds.put("heal", new MediaPlayer(new Media(HunterController.class.getResource("/heal.mp3").toString())));
+		sounds.put("hit",new MediaPlayer(new Media(HunterController.class.getResource("/hit.wav").toString())));
 	}
 	
 	public void update() {

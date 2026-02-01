@@ -109,3 +109,23 @@ buildNumber.properties
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java,maven
 
 .classpath
+
+### Build Artifacts ###
+dist/
+*.exe
+*.dmg
+*.msi
+
+### Release Packages ###
+release/*.zip
+release/*.dmg
+release/*.msi
+!RELEASE_GUIDE.md
+
+### Game Save Files ###
+# Ignore user game state files (test fixtures in src/test/resources are already tracked)
+gameState*.json
+gameState*.txt
+gameState*.tmp
+gameState*.bak
+.hunter/

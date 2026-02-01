@@ -5,4 +5,5 @@ open module HPack {
 	requires javafx.graphics;
 	requires javafx.media;
 	requires java.desktop;
+	requires com.google.gson;
 }

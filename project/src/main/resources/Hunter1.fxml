@@ -13,14 +13,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HPack.HunterController" onKeyPressed="#keyPressed" onKeyReleased = "#keyReleased" onKeyTyped="#keyTyped">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" onKeyTyped="#keyTyped" prefHeight="640" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="HPack.HunterController">
    <children>
       <Button fx:id="Save" focusTraversable="false" layoutX="535.0" layoutY="607.0" mnemonicParsing="false" onMouseClicked="#save" text="Load" />
       <Button fx:id="help" contentDisplay="CENTER" focusTraversable="false" graphicTextGap="0.0" layoutX="6.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#help" prefHeight="30.0" prefWidth="30.0">
          <graphic>
             <ImageView fitHeight="54.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="help.png" />
+                  <Image url="@help.png" />
                </image>
             </ImageView>
          </graphic>
@@ -29,7 +29,7 @@
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="29.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="sound.png" />
+                  <Image url="@sound.png" />
                </image>
             </ImageView>
          </graphic>
@@ -38,12 +38,12 @@
          <children>
             <Button fx:id="play" disable="true" focusTraversable="false" layoutX="236.0" layoutY="358.0" mnemonicParsing="false" onMouseClicked="#play" prefHeight="25.0" prefWidth="232.0" text="Play" visible="false" />
          </children></Pane>
-      <Slider fx:id="volumeSlider" blockIncrement="0.01" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" disable="true" />
+      <Slider fx:id="volumeSlider" blockIncrement="0.01" disable="true" focusTraversable="false" layoutX="45.0" layoutY="498.0" majorTickUnit="0.01" max="1.0" onMouseClicked="#setSliderVolume" onMouseDragged="#setSliderVolume" onMousePressed="#setSliderVolume" onMouseReleased="#disableFocus" orientation="VERTICAL" prefHeight="109.0" prefWidth="30.0" translateZ="1.0" value="0.01" visible="false" />
       <BorderPane layoutX="488.0" layoutY="604.0" prefHeight="30.0" prefWidth="30.0" style="-fx-border-color: grey;">
          <center>
             <ImageView fx:id="trapIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
-                  <Image url="trap.png" />
+                  <Image url="@trap.png" />
                </image>
             </ImageView>
          </center>
@@ -102,14 +102,14 @@
 			                  <Font size="17.0" />
 			               </font>
 			            </Text>
-			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="56.0" layoutY="-19.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="64.0" layoutY="-19.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="rabbitMeat.png" />
+			                  <Image url="@rabbitMeat.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="42.0" fitWidth="50.0" layoutX="130.0" layoutY="-32.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="42.0" fitWidth="50.0" layoutX="155.0" layoutY="-32.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="rabbit.png" />
+			                  <Image url="@rabbit.png" />
 			               </image>
 			            </ImageView>
 			         </children>
@@ -121,48 +121,48 @@
 			                  <Font size="17.0" />
 			               </font>
 			            </Text>
-			            <ImageView fitHeight="47.0" fitWidth="31.0" layoutX="85.0" layoutY="-36.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="47.0" fitWidth="31.0" layoutX="94.0" layoutY="-36.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="hunterD.png" />
+			                  <Image url="@hunterD.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="255.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="258.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="down.png" />
+			                  <Image url="@down.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="233.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="236.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="left.png" />
+			                  <Image url="@left.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="255.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="258.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="up.png" />
+			                  <Image url="@up.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="277.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="24.0" fitWidth="22.0" layoutX="280.0" layoutY="-13.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="right.png" />
+			                  <Image url="@right.png" />
 			               </image>
 			            </ImageView>
 			         </children>
 			      </Group>
 			      <Group layoutX="96.0" layoutY="184.0">
 			         <children>
-			            <Text  layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="Place and pick up the              with ">
+			            <Text layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="Place and pick up the              with ">
 			               <font>
 			                  <Font size="17.0" />
 			               </font>
 			            </Text>
-			            <ImageView fitHeight="32.0" fitWidth="31.0" layoutX="166.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="32.0" fitWidth="31.0" layoutX="182.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="trap.png" />
+			                  <Image url="@trap.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="37.0" fitWidth="33.0" layoutX="254.0" layoutY="-24.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="37.0" fitWidth="33.0" layoutX="282.0" layoutY="-24.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="q.png" />
+			                  <Image url="@q.png" />
 			               </image>
 			            </ImageView>
 			         </children>
@@ -174,19 +174,19 @@
 			                  <Font size="17.0" />
 			               </font>
 			            </Text>
-			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="77.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="81.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="rabbitMeat.png" />
+			                  <Image url="@rabbitMeat.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="32.0" fitWidth="34.0" layoutX="142.0" layoutY="-22.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="32.0" fitWidth="34.0" layoutX="164.0" layoutY="-22.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="water.png" />
+			                  <Image url="@water.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="32.0" fitWidth="34.0" layoutX="218.0" layoutY="-21.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="32.0" fitWidth="34.0" layoutX="257.0" layoutY="-21.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="w.png" />
+			                  <Image url="@w.png" />
 			               </image>
 			            </ImageView>
 			         </children>
@@ -198,19 +198,19 @@
 			                  <Font size="17.0" />
 			               </font>
 			            </Text>
-			            <ImageView fitHeight="49.0" fitWidth="33.0" layoutX="78.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="49.0" fitWidth="33.0" layoutX="87.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="hunterD.png" />
+			                  <Image url="@hunterD.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="42.0" fitWidth="41.0" layoutX="192.0" layoutY="-27.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="42.0" fitWidth="41.0" layoutX="215.0" layoutY="-27.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="bird.png" />
+			                  <Image url="@bird.png" />
 			               </image>
 			            </ImageView>
-			            <ImageView fitHeight="46.0" fitWidth="47.0" layoutX="272.0" layoutY="-28.0" pickOnBounds="true" preserveRatio="true">
+			            <ImageView fitHeight="46.0" fitWidth="47.0" layoutX="312.0" layoutY="-28.0" pickOnBounds="true" preserveRatio="true">
 			               <image>
-			                  <Image url="rabbit.png" />
+			                  <Image url="@rabbit.png" />
 			               </image>
 			            </ImageView>
 			         </children>
