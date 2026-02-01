@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "hunter": {
+    "x": 400.0,
+    "y": 400.0,
+    "health": 50.0,
+    "hunger": 45.0,
+    "thirst": 40.0,
+    "image": "hunterR"
+  },
+  "gameState": {
+    "time": 0.02,
+    "days": 50,
+    "years": 1
+  },
+  "objects": []
+}

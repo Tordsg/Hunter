@@ -48,28 +48,34 @@
             </ImageView>
          </center>
       </BorderPane>
-      <Text layoutX="246.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Health" />
-      <Text layoutX="328.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hunger" />
-      <Text layoutX="417.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thirst" />
+      <Text layoutX="246.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Health">
+         <font><Font name="Arial" size="12.0" /></font>
+      </Text>
+      <Text layoutX="328.0" layoutY="616.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hunger">
+         <font><Font name="Arial" size="12.0" /></font>
+      </Text>
+      <Text layoutX="417.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thirst">
+         <font><Font name="Arial" size="12.0" /></font>
+      </Text>
       <HBox layoutX="83.0" layoutY="604.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" prefWidth="118.0">
          <children>
             <Text fx:id="days" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                <font>
-                  <Font size="30.0" />
+                  <Font name="Arial" size="30.0" />
                </font>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="days" underline="true">
                <font>
-                  <Font size="8.0" />
+                  <Font name="Arial" size="8.0" />
                </font></Text>
             <Text fx:id="years" strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                <font>
-                  <Font size="30.0" />
+                  <Font name="Arial" size="30.0" />
                </font>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="years" underline="true">
                <font>
-                  <Font size="8.0" />
+                  <Font name="Arial" size="8.0" />
                </font></Text>
          </children>
       </HBox>
@@ -90,7 +96,7 @@
       </BorderPane>
       <Text fx:id="header" fill="#e42121" layoutX="160.0" layoutY="-29.0" stroke="#362b2b" strokeType="OUTSIDE" strokeWidth="5.0" text="Hunter" textAlignment="CENTER">
          <font>
-            <Font name="Palatino Linotype" size="96.0" />
+            <Font name="Arial" size="96.0" />
          </font>
       </Text>
       <Pane fx:id="infoPane" disable="true" layoutX="50" layoutY="50.0" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #ebebeb; -fx-border-width: 5; -fx-border-color: grey;" visible="false">
@@ -99,7 +105,7 @@
 			         <children>
 			            <Text layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="to get            from ">
 			               <font>
-			                  <Font size="17.0" />
+			                  <Font name="Arial" size="17.0" />
 			               </font>
 			            </Text>
 			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="64.0" layoutY="-19.0" pickOnBounds="true" preserveRatio="true">
@@ -118,7 +124,7 @@
 			         <children>
 			            <Text layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="Move the            around with ">
 			               <font>
-			                  <Font size="17.0" />
+			                  <Font name="Arial" size="17.0" />
 			               </font>
 			            </Text>
 			            <ImageView fitHeight="47.0" fitWidth="31.0" layoutX="94.0" layoutY="-36.0" pickOnBounds="true" preserveRatio="true">
@@ -152,7 +158,7 @@
 			         <children>
 			            <Text layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="Place and pick up the              with ">
 			               <font>
-			                  <Font size="17.0" />
+			                  <Font name="Arial" size="17.0" />
 			               </font>
 			            </Text>
 			            <ImageView fitHeight="32.0" fitWidth="31.0" layoutX="182.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
@@ -171,7 +177,7 @@
 			         <children>
 			            <Text layoutX="2" strokeType="OUTSIDE" strokeWidth="0.0" text="Consume           and             with ">
 			               <font>
-			                  <Font size="17.0" />
+			                  <Font name="Arial" size="17.0" />
 			               </font>
 			            </Text>
 			            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="81.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
@@ -195,7 +201,7 @@
 			         <children>
 			            <Text layoutX="10" strokeType="OUTSIDE" strokeWidth="0.0" text="Keep the           away from              and         ">
 			               <font>
-			                  <Font size="17.0" />
+			                  <Font name="Arial" size="17.0" />
 			               </font>
 			            </Text>
 			            <ImageView fitHeight="49.0" fitWidth="33.0" layoutX="87.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">

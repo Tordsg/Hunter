@@ -30,14 +30,14 @@ This will create a ZIP file in the `release/` folder: `Hunter-Windows-1.0.0.zip`
 
 ### macOS
 
-On a Mac, create a ZIP of the DMG or the app bundle:
+Run the release preparation script (after `./build-mac.sh`):
 ```bash
-# If you have a DMG
-zip -r release/Hunter-macOS-1.0.0.zip dist/Hunter-1.0.0.dmg
-
-# Or if you have an app bundle
-zip -r release/Hunter-macOS-1.0.0.zip dist/Hunter.app
+./prepare-release.sh
 ```
+
+This will create in the `release/` folder:
+- `Hunter-macOS-1.0.0.dmg` – ready to upload to GitHub
+- `Hunter-macOS-1.0.0.zip` – ZIP containing the DMG (optional)
 
 ## Step 2: Commit and Tag Your Release
 

@@ -3,13 +3,47 @@
 echo "Building Hunter Game for macOS..."
 echo
 
+# Use Homebrew OpenJDK when Java isn't on PATH or JAVA_HOME not set (common with multi-account Macs)
+if [ -z "$JAVA_HOME" ] || ! command -v java >/dev/null 2>&1; then
+  for dir in /opt/homebrew/opt/openjdk /opt/homebrew/opt/openjdk@17 /opt/homebrew/opt/openjdk@21 /opt/homebrew/opt/openjdk@25; do
+    if [ -x "$dir/bin/java" ]; then
+      export JAVA_HOME="$dir"
+      export PATH="$dir/bin:$PATH"
+      echo "Using Java from: $JAVA_HOME"
+      break
+    fi
+  done
+  # Fallback: any other openjdk* in Homebrew (e.g. from brew install maven)
+  if ! command -v java >/dev/null 2>&1; then
+    for dir in /opt/homebrew/opt/openjdk@*/bin; do
+      [ -d "$dir" ] || continue
+      if [ -x "$dir/java" ]; then
+        export JAVA_HOME="${dir%/bin}"
+        export PATH="$dir:$PATH"
+        echo "Using Java from: $JAVA_HOME"
+        break
+      fi
+    done
+  fi
+fi
+if ! command -v java >/dev/null 2>&1; then
+  echo "ERROR: No Java runtime found. Install a JDK 17+ (e.g. brew install openjdk@17) or set JAVA_HOME."
+  exit 1
+fi
+
 cd project
 
-echo "Cleaning previous builds..."
-mvn clean
+# Prefer system Maven (e.g. from Homebrew) when available; otherwise use wrapper
+MVN="mvn"
+if ! command -v mvn >/dev/null 2>&1; then
+  [ -x "./mvnw" ] && MVN="./mvnw" || { echo "ERROR: mvn not found and ./mvnw not executable."; exit 1; }
+fi
 
-echo "Building JAR..."
-mvn package
+echo "Cleaning previous builds..."
+$MVN clean
+
+echo "Building JAR (tests skipped - run 'mvn test' separately for full test suite)..."
+$MVN package -DskipTests
 
 if [ $? -ne 0 ]; then
     echo "Build failed!"
@@ -29,10 +63,57 @@ fi
 
 echo "Found JavaFX modules in target/javafx-modules"
 
+# Ensure JAVA_HOME is set for jpackage (same detection as at top of script)
+if [ -z "$JAVA_HOME" ] || [ ! -x "$JAVA_HOME/bin/jpackage" ]; then
+  for dir in /opt/homebrew/opt/openjdk /opt/homebrew/opt/openjdk@17 /opt/homebrew/opt/openjdk@21 /opt/homebrew/opt/openjdk@25; do
+    if [ -x "$dir/bin/jpackage" ]; then
+      export JAVA_HOME="$dir"
+      export PATH="$dir/bin:$PATH"
+      echo "Using JDK for jpackage: $JAVA_HOME"
+      break
+    fi
+  done
+  if [ -z "$JAVA_HOME" ]; then
+    for dir in /opt/homebrew/opt/openjdk@*/bin; do
+      [ -d "$dir" ] || continue
+      if [ -x "$dir/jpackage" ]; then
+        export JAVA_HOME="${dir%/bin}"
+        export PATH="$dir:$PATH"
+        echo "Using JDK for jpackage: $JAVA_HOME"
+        break
+      fi
+    done
+  fi
+fi
+if [ -z "$JAVA_HOME" ] || [ ! -x "$JAVA_HOME/bin/jpackage" ]; then
+  echo "ERROR: No JDK with jpackage found. Set JAVA_HOME to a JDK 17+ (e.g. from brew install openjdk@17)."
+  exit 1
+fi
+
 # Build module path for jpackage
 JAVAFX_MODULE_PATH="$(pwd)/target/javafx-modules"
 
+# Generate macOS app icon (.icns) from PNG if present
+if [ -f "icons/GameIcon.png" ]; then
+  echo "Creating app icon..."
+  ICONSET="icons/Hunter.iconset"
+  rm -rf "$ICONSET"
+  mkdir -p "$ICONSET"
+  sips -z 16 16 icons/GameIcon.png --out "$ICONSET/icon_16x16.png" >/dev/null 2>&1
+  sips -z 32 32 icons/GameIcon.png --out "$ICONSET/icon_16x16@2x.png" >/dev/null 2>&1
+  sips -z 32 32 icons/GameIcon.png --out "$ICONSET/icon_32x32.png" >/dev/null 2>&1
+  sips -z 64 64 icons/GameIcon.png --out "$ICONSET/icon_32x32@2x.png" >/dev/null 2>&1
+  sips -z 128 128 icons/GameIcon.png --out "$ICONSET/icon_128x128.png" >/dev/null 2>&1
+  sips -z 256 256 icons/GameIcon.png --out "$ICONSET/icon_128x128@2x.png" >/dev/null 2>&1
+  sips -z 256 256 icons/GameIcon.png --out "$ICONSET/icon_256x256.png" >/dev/null 2>&1
+  sips -z 512 512 icons/GameIcon.png --out "$ICONSET/icon_256x256@2x.png" >/dev/null 2>&1
+  sips -z 512 512 icons/GameIcon.png --out "$ICONSET/icon_512x512.png" >/dev/null 2>&1
+  sips -z 1024 1024 icons/GameIcon.png --out "$ICONSET/icon_512x512@2x.png" >/dev/null 2>&1
+  iconutil -c icns "$ICONSET" -o icons/Hunter.icns 2>/dev/null && rm -rf "$ICONSET"
+fi
+
 jpackage --input target \
+    $( [ -f "icons/Hunter.icns" ] && echo "--icon $(pwd)/icons/Hunter.icns" ) \
     --name Hunter \
     --main-jar hunter-game-1.0.0.jar \
     --main-class HPack.HunterApp \

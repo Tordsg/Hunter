@@ -98,7 +98,12 @@ if exist ..\dist\Hunter (
 REM Build module path for jpackage (Windows path format)
 set JAVAFX_MODULE_PATH=%CD%\target\javafx-modules
 
+REM Use app icon if present (create GameIcon.ico from icons\GameIcon.png with an image editor or ImageMagick)
+set ICON_ARG=
+if exist icons\GameIcon.ico set ICON_ARG=--icon icons\GameIcon.ico
+
 jpackage --input target ^
+    %ICON_ARG% ^
     --name Hunter ^
     --main-jar hunter-game-1.0.0.jar ^
     --main-class HPack.HunterApp ^
@@ -137,6 +142,7 @@ REM If app-image failed, try MSI (also doesn't require WiX, but might not work o
 echo.
 echo App-image failed, trying MSI format...
 jpackage --input target ^
+    %ICON_ARG% ^
     --name Hunter ^
     --main-jar hunter-game-1.0.0.jar ^
     --main-class HPack.HunterApp ^

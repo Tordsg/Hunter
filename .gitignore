@@ -105,6 +105,7 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+project/.mvn/wrapper/maven-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java,maven
 
@@ -112,6 +113,9 @@ buildNumber.properties
 
 ### Build Artifacts ###
 dist/
+# Generated app icons (source: project/icons/GameIcon.png)
+project/icons/Hunter.icns
+project/icons/Hunter.iconset/
 *.exe
 *.dmg
 *.msi
@@ -123,9 +127,12 @@ release/*.msi
 !RELEASE_GUIDE.md
 
 ### Game Save Files ###
-# Ignore user game state files (test fixtures in src/test/resources are already tracked)
+# Ignore user game state files; test fixtures in project/src/test/resources are tracked
 gameState*.json
 gameState*.txt
 gameState*.tmp
 gameState*.bak
+# Track test fixtures so LegalJSONFile / LegalCSVFile tests pass
+!project/src/test/resources/gameState*.json
+!project/src/test/resources/gameState*.txt
 .hunter/
